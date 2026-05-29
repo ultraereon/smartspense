@@ -1055,12 +1055,11 @@ function handleIncomingShortcut() {
   }
 
   // Clean amountStr of any currency symbols, commas, or spaces (e.g. "Rs. 2,500.00" -> "2500.00")
-  let cleanAmountStr = amountStr.replace(/^[^0-9.-]+/g, '').replace(/[^\d.-]/g, '');
-  
-  // If we have multiple dots (e.g. ".30.00" from "Rs.30.00") and it starts with a dot, strip the leading dot
-  if (cleanAmountStr.startsWith('.') && (cleanAmountStr.match(/\./g) || []).length > 1) {
-    cleanAmountStr = cleanAmountStr.substring(1);
-  }
+  let cleanAmountStr = amountStr.trim();
+  // Strip common currency prefixes case-insensitively
+  cleanAmountStr = cleanAmountStr.replace(/^(rs\.?|inr\.?|usd\.?|₹|\$)\s*/i, '');
+  // Clean other non-digit/non-decimal characters
+  cleanAmountStr = cleanAmountStr.replace(/[^\d.-]/g, '');
   
   const amount = parseFloat(cleanAmountStr);
   if (isNaN(amount) || amount <= 0) {
