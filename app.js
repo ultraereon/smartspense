@@ -1034,25 +1034,38 @@ window.loadDemoData = loadDemoData;
 window.startTourFromOverlay = startTourFromOverlay;
 window.dismissWelcomeOverlay = dismissWelcomeOverlay;
 
-// Auto-categorize expenses based on description keywords
-function autoCategorizeExpense(desc) {
+// Auto-categorize transactions based on description keywords
+function autoCategorizeTransaction(desc, type) {
   if (!desc) return 'Miscellaneous';
   const lowercaseDesc = desc.toLowerCase();
 
-  const rules = [
-    { category: 'Food', keywords: ['swiggy', 'zomato', 'restaurant', 'cafe', 'hotel', 'food', 'eat', 'bakery', 'kitchen', 'diner', 'starbucks', 'mcdonalds', 'kfc', 'burger', 'pizza', 'tea', 'coffee', 'canteen', 'grocer', 'supermarket', 'mart', 'dining'] },
-    { category: 'Transport', keywords: ['uber', 'ola', 'auto', 'metro', 'irctc', 'cab', 'petrol', 'fuel', 'shell', 'hpcl', 'iocl', 'bpcl', 'cng', 'toll', 'railway', 'transport', 'train', 'flight', 'airline', 'bus', 'parking', 'ksrtc', 'kerala state ro'] },
-    { category: 'Utilities', keywords: ['electricity', 'kseb', 'kfon', 'keralavision', 'kwa', 'power', 'wifi', 'bescom', 'water', 'recharge', 'bill', 'telecom', 'jio', 'airtel', 'vi ', 'broadband', 'act ', 'gas', 'dth', 'insurance', 'rent'] },
-    { category: 'Entertainment', keywords: ['netflix', 'apple', 'spotify', 'movie', 'pvr', 'booking', 'game', 'play', 'steam', 'theatre', 'show', 'concert', 'club', 'pub', 'bar ', 'subscrip'] }
-  ];
-
-  for (const rule of rules) {
-    if (rule.keywords.some(keyword => lowercaseDesc.includes(keyword))) {
-      return rule.category;
+  if (type === 'income') {
+    const incomeRules = [
+      { category: 'Salary', keywords: ['salary', 'payroll', 'wages', 'employer'] },
+      { category: 'Investments', keywords: ['dividend', 'interest', 'return', 'profit'] },
+      { category: 'Freelance', keywords: ['freelance', 'contract', 'fiverr', 'upwork', 'client'] }
+    ];
+    for (const rule of incomeRules) {
+      if (rule.keywords.some(keyword => lowercaseDesc.includes(keyword))) {
+        return rule.category;
+      }
     }
-  }
+    return 'Miscellaneous';
+  } else {
+    const expenseRules = [
+      { category: 'Food', keywords: ['swiggy', 'zomato', 'restaurant', 'cafe', 'hotel', 'food', 'eat', 'bakery', 'kitchen', 'diner', 'starbucks', 'mcdonalds', 'kfc', 'burger', 'pizza', 'tea', 'coffee', 'canteen', 'grocer', 'supermarket', 'mart', 'dining'] },
+      { category: 'Transport', keywords: ['uber', 'ola', 'auto', 'metro', 'irctc', 'cab', 'petrol', 'fuel', 'shell', 'hpcl', 'iocl', 'bpcl', 'cng', 'toll', 'railway', 'transport', 'train', 'flight', 'airline', 'bus', 'parking', 'ksrtc', 'kerala state ro'] },
+      { category: 'Utilities', keywords: ['electricity', 'kseb', 'kfon', 'keralavision', 'kwa', 'power', 'wifi', 'bescom', 'water', 'recharge', 'bill', 'telecom', 'jio', 'airtel', 'vi ', 'broadband', 'act ', 'gas', 'dth', 'insurance', 'rent'] },
+      { category: 'Entertainment', keywords: ['netflix', 'apple', 'spotify', 'movie', 'pvr', 'booking', 'game', 'play', 'steam', 'theatre', 'show', 'concert', 'club', 'pub', 'bar ', 'subscrip'] }
+    ];
 
-  return 'Miscellaneous';
+    for (const rule of expenseRules) {
+      if (rule.keywords.some(keyword => lowercaseDesc.includes(keyword))) {
+        return rule.category;
+      }
+    }
+    return 'Miscellaneous';
+  }
 }
 
 // Brand metadata lookup for logos/colors
@@ -1113,7 +1126,13 @@ function handleIncomingShortcut() {
 
   // Validate type
   const validTypes = ['income', 'expense'];
-  const finalType = validTypes.includes(type.toLowerCase()) ? type.toLowerCase() : 'expense';
+  let finalType = validTypes.includes(type.toLowerCase()) ? type.toLowerCase() : 'expense';
+
+  // Smart detect incoming money from description (SMS parsing)
+  const descLower = desc.toLowerCase();
+  if (descLower.includes('received') || descLower.includes('credited') || descLower.includes('salary') || descLower.includes('refund')) {
+    finalType = 'income';
+  }
 
   // Validate and map category
   const incomeCategories = ['Salary', 'Freelance', 'Investments', 'Miscellaneous'];
@@ -1130,11 +1149,9 @@ function handleIncomingShortcut() {
   }
 
   if (!finalCategory || finalCategory === 'Miscellaneous') {
-    if (finalType === 'expense') {
-      const autoCat = autoCategorizeExpense(desc);
-      if (autoCat !== 'Miscellaneous') {
-        finalCategory = autoCat;
-      }
+    const autoCat = autoCategorizeTransaction(desc, finalType);
+    if (autoCat !== 'Miscellaneous') {
+      finalCategory = autoCat;
     }
   }
   
@@ -1224,7 +1241,7 @@ function showSiriSuccessToast(title, message, category) {
 
   // Apply category-specific colors to toast border, shadow, and title
   if (category) {
-    const rootStyle = getComputedStyle(document.documentElement);
+    const rootStyle = getComputedStyle(document.body);
     const catColor = rootStyle.getPropertyValue('--color-cat-' + category.toLowerCase()).trim();
     if (catColor) {
       toast.style.borderColor = catColor;

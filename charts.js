@@ -8,9 +8,8 @@ let categoryDoughnutChart = null;
 let monthlyComparisonChart = null;
 
 // Design system colors (Hex codes matching CSS custom properties)
-// Design system colors dynamically read from CSS custom properties
 function getDynamicColors() {
-  const rootStyle = getComputedStyle(document.documentElement);
+  const rootStyle = getComputedStyle(document.body);
   
   // Retrieve color tokens from CSS variables
   const primary = rootStyle.getPropertyValue('--primary').trim();
@@ -38,7 +37,7 @@ function getDynamicColors() {
 
 // Theme configurations
 const getThemeColors = (isDarkMode) => {
-  const rootStyle = getComputedStyle(document.documentElement);
+  const rootStyle = getComputedStyle(document.body);
   const text = rootStyle.getPropertyValue('--text-primary').trim() || (isDarkMode ? '#E2E8F0' : '#1E293B');
   const grid = isDarkMode ? 'rgba(148, 163, 184, 0.1)' : 'rgba(71, 85, 105, 0.08)';
   const tooltipBg = rootStyle.getPropertyValue('--surface-container-high').trim() || (isDarkMode ? '#1E293B' : '#FFFFFF');
@@ -204,7 +203,7 @@ function updateMonthlyTrendChart(allTransactions, isDarkMode) {
   }
 
   // Draw chart using theme variables dynamically
-  const rootStyle = getComputedStyle(document.documentElement);
+  const rootStyle = getComputedStyle(document.body);
   const incomeColor = rootStyle.getPropertyValue('--primary').trim() || (isDarkMode ? '#76E0A6' : '#006D3C');
   const expenseColor = rootStyle.getPropertyValue('--tertiary').trim() || (isDarkMode ? '#A4C9FF' : '#005FAF');
 

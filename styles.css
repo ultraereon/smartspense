@@ -60,15 +60,15 @@
   --card-glow: rgba(118, 224, 166, 0.04);
   
   /* Category specific colors for Dark Mode */
-  --color-cat-food: var(--accent-red);
-  --color-cat-utilities: var(--accent-teal);
+  --color-cat-food: #E57373;
+  --color-cat-utilities: #4DEEEA;
   --color-cat-entertainment: #C38FFF;
-  --color-cat-housing: var(--accent-orange);
+  --color-cat-housing: #FFB74D;
   --color-cat-transport: #FFD54F;
-  --color-cat-miscellaneous: var(--text-secondary);
-  --color-cat-salary: var(--accent-emerald);
-  --color-cat-freelance: var(--secondary);
-  --color-cat-investments: var(--tertiary);
+  --color-cat-miscellaneous: #C1C9C3;
+  --color-cat-salary: #81C784;
+  --color-cat-freelance: #9AD0EC;
+  --color-cat-investments: #A4C9FF;
 }
 
 /* Light Mode Palette - Green & Blue Theme */
@@ -111,15 +111,15 @@ body.light-mode {
   --card-glow: rgba(0, 109, 60, 0.03);
   
   /* Category specific colors for Light Mode */
-  --color-cat-food: var(--accent-red);
-  --color-cat-utilities: var(--accent-teal);
+  --color-cat-food: #BA1A1A;
+  --color-cat-utilities: #006A6A;
   --color-cat-entertainment: #7F3DEC;
-  --color-cat-housing: var(--accent-orange);
+  --color-cat-housing: #8B5000;
   --color-cat-transport: #B8860B;
-  --color-cat-miscellaneous: var(--text-secondary);
-  --color-cat-salary: var(--accent-emerald);
-  --color-cat-freelance: var(--secondary);
-  --color-cat-investments: var(--tertiary);
+  --color-cat-miscellaneous: #414944;
+  --color-cat-salary: #1B6C39;
+  --color-cat-freelance: #006695;
+  --color-cat-investments: #005FAF;
 }
 
 /* --- Base Resets & Layout --- */
