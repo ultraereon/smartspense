@@ -65,6 +65,7 @@
   --color-cat-entertainment: #C38FFF;
   --color-cat-housing: #FFB74D;
   --color-cat-transport: #FFD54F;
+  --color-cat-shopping: #FF80AB;
   --color-cat-miscellaneous: #C1C9C3;
   --color-cat-salary: #81C784;
   --color-cat-freelance: #9AD0EC;
@@ -116,6 +117,7 @@ body.light-mode {
   --color-cat-entertainment: #7F3DEC;
   --color-cat-housing: #8B5000;
   --color-cat-transport: #B8860B;
+  --color-cat-shopping: #D81B60;
   --color-cat-miscellaneous: #414944;
   --color-cat-salary: #1B6C39;
   --color-cat-freelance: #006695;

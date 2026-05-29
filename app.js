@@ -540,7 +540,7 @@ function handleFormTypeChange() {
 
   const options = type === 'income'
     ? ['Salary', 'Freelance', 'Investments', 'Miscellaneous']
-    : ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Miscellaneous'];
+    : ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Shopping', 'Miscellaneous'];
 
   options.forEach(opt => {
     const el = document.createElement('option');
@@ -793,6 +793,7 @@ function getCategoryIcon(category) {
     Entertainment: 'film',
     Housing: 'home',
     Transport: 'car',
+    Shopping: 'shopping-bag',
     Miscellaneous: 'help-circle'
   };
   return iconMap[category] || 'help-circle';
@@ -1056,7 +1057,8 @@ function autoCategorizeTransaction(desc, type) {
       { category: 'Food', keywords: ['swiggy', 'zomato', 'restaurant', 'cafe', 'hotel', 'food', 'eat', 'bakery', 'kitchen', 'diner', 'starbucks', 'mcdonalds', 'kfc', 'burger', 'pizza', 'tea', 'coffee', 'canteen', 'grocer', 'supermarket', 'mart', 'dining'] },
       { category: 'Transport', keywords: ['uber', 'ola', 'auto', 'metro', 'irctc', 'cab', 'petrol', 'fuel', 'shell', 'hpcl', 'iocl', 'bpcl', 'cng', 'toll', 'railway', 'transport', 'train', 'flight', 'airline', 'bus', 'parking', 'ksrtc', 'kerala state ro'] },
       { category: 'Utilities', keywords: ['electricity', 'kseb', 'kfon', 'keralavision', 'kwa', 'power', 'wifi', 'bescom', 'water', 'recharge', 'bill', 'telecom', 'jio', 'airtel', 'vi ', 'broadband', 'act ', 'gas', 'dth', 'insurance', 'rent'] },
-      { category: 'Entertainment', keywords: ['netflix', 'apple', 'spotify', 'movie', 'pvr', 'booking', 'game', 'play', 'steam', 'theatre', 'show', 'concert', 'club', 'pub', 'bar ', 'subscrip'] }
+      { category: 'Entertainment', keywords: ['netflix', 'apple', 'spotify', 'movie', 'pvr', 'booking', 'game', 'play', 'steam', 'theatre', 'show', 'concert', 'club', 'pub', 'bar ', 'subscrip'] },
+      { category: 'Shopping', keywords: ['amazon', 'flipkart', 'myntra', 'ajio', 'cloth', 'shop', 'mall', 'store', 'purchase', 'apparel', 'shoes', 'amazon.in'] }
     ];
 
     for (const rule of expenseRules) {
@@ -1136,7 +1138,7 @@ function handleIncomingShortcut() {
 
   // Validate and map category
   const incomeCategories = ['Salary', 'Freelance', 'Investments', 'Miscellaneous'];
-  const expenseCategories = ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Miscellaneous'];
+  const expenseCategories = ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Shopping', 'Miscellaneous'];
   const validCategories = finalType === 'income' ? incomeCategories : expenseCategories;
 
   // Find case-insensitive match or fallback to auto-categorization
@@ -1286,7 +1288,7 @@ function setupSiriUrlBuilder() {
     siriCategory.innerHTML = '';
     const options = type === 'income'
       ? ['Salary', 'Freelance', 'Investments', 'Miscellaneous']
-      : ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Miscellaneous'];
+      : ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Shopping', 'Miscellaneous'];
 
     options.forEach(opt => {
       const el = document.createElement('option');

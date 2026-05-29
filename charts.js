@@ -27,6 +27,7 @@ function getDynamicColors() {
     Entertainment: rootStyle.getPropertyValue('--color-cat-entertainment').trim() || '#C38FFF',
     Housing: rootStyle.getPropertyValue('--color-cat-housing').trim() || '#FFB74D',
     Transport: rootStyle.getPropertyValue('--color-cat-transport').trim() || '#FFD54F',
+    Shopping: rootStyle.getPropertyValue('--color-cat-shopping').trim() || '#FF80AB',
     Miscellaneous: rootStyle.getPropertyValue('--color-cat-miscellaneous').trim() || '#C1C9C3',
     Salary: rootStyle.getPropertyValue('--color-cat-salary').trim() || '#81C784',
     Freelance: rootStyle.getPropertyValue('--color-cat-freelance').trim() || '#9AD0EC',
