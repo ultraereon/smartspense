@@ -217,7 +217,7 @@ function render() {
     if (welcomeSec) welcomeSec.classList.remove('hidden');
     
     // First time welcome overlay trigger
-    const onboardingShown = localStorage.getItem('aura_onboarding_shown');
+    const onboardingShown = localStorage.getItem('smartspense_onboarding_shown');
     if (!onboardingShown) {
       if (overlay) overlay.classList.remove('hidden');
     }
@@ -767,7 +767,7 @@ function handleFactoryReset() {
 
   localStorage.removeItem('expense_tracker_transactions');
   localStorage.removeItem('expense_tracker_budgets');
-  localStorage.removeItem('aura_onboarding_shown'); // Clear flag to trigger overlay again
+  localStorage.removeItem('smartspense_onboarding_shown'); // Clear flag to trigger overlay again
   
   loadData();
   setupMonthSelector();
@@ -852,7 +852,7 @@ let tourState = {
     {
       elementId: 'budgetProgressList',
       title: 'Target Budgets Tracker',
-      description: 'Define spending limits per category. AuraBudget warns you with green, orange, and red indicators based on your actual outgoings.',
+      description: 'Define spending limits per category. SmartSpense warns you with green, orange, and red indicators based on your actual outgoings.',
       placement: 'left'
     },
     {
@@ -1013,7 +1013,7 @@ window.addEventListener('resize', () => {
 function dismissWelcomeOverlay() {
   const overlay = document.getElementById('welcomeOverlay');
   if (overlay) overlay.classList.add('hidden');
-  localStorage.setItem('aura_onboarding_shown', 'true');
+  localStorage.setItem('smartspense_onboarding_shown', 'true');
 }
 
 function startTourFromOverlay() {
