@@ -58,6 +58,17 @@
   
   --card-border: rgba(255, 255, 255, 0.06);
   --card-glow: rgba(118, 224, 166, 0.04);
+  
+  /* Category specific colors for Dark Mode */
+  --color-cat-food: var(--accent-red);
+  --color-cat-utilities: var(--accent-teal);
+  --color-cat-entertainment: #C38FFF;
+  --color-cat-housing: var(--accent-orange);
+  --color-cat-transport: #FFD54F;
+  --color-cat-miscellaneous: var(--text-secondary);
+  --color-cat-salary: var(--accent-emerald);
+  --color-cat-freelance: var(--secondary);
+  --color-cat-investments: var(--tertiary);
 }
 
 /* Light Mode Palette - Green & Blue Theme */
@@ -98,6 +109,17 @@ body.light-mode {
   
   --card-border: rgba(0, 0, 0, 0.06);
   --card-glow: rgba(0, 109, 60, 0.03);
+  
+  /* Category specific colors for Light Mode */
+  --color-cat-food: var(--accent-red);
+  --color-cat-utilities: var(--accent-teal);
+  --color-cat-entertainment: #7F3DEC;
+  --color-cat-housing: var(--accent-orange);
+  --color-cat-transport: #B8860B;
+  --color-cat-miscellaneous: var(--text-secondary);
+  --color-cat-salary: var(--accent-emerald);
+  --color-cat-freelance: var(--secondary);
+  --color-cat-investments: var(--tertiary);
 }
 
 /* --- Base Resets & Layout --- */
@@ -794,15 +816,29 @@ td {
 }
 
 /* Category Badges colors matching dynamic theme */
-.category-badge.cat-salary { background: color-mix(in srgb, var(--accent-emerald) 12%, transparent); color: var(--accent-emerald); border-color: color-mix(in srgb, var(--accent-emerald) 20%, transparent); }
-.category-badge.cat-freelance { background: color-mix(in srgb, var(--secondary) 12%, transparent); color: var(--secondary); border-color: color-mix(in srgb, var(--secondary) 20%, transparent); }
-.category-badge.cat-investments { background: color-mix(in srgb, var(--tertiary) 12%, transparent); color: var(--tertiary); border-color: color-mix(in srgb, var(--tertiary) 20%, transparent); }
-.category-badge.cat-food { background: color-mix(in srgb, var(--accent-red) 12%, transparent); color: var(--accent-red); border-color: color-mix(in srgb, var(--accent-red) 20%, transparent); }
-.category-badge.cat-utilities { background: color-mix(in srgb, var(--accent-teal) 12%, transparent); color: var(--accent-teal); border-color: color-mix(in srgb, var(--accent-teal) 20%, transparent); }
-.category-badge.cat-entertainment { background: color-mix(in srgb, var(--secondary) 12%, transparent); color: var(--secondary); border-color: color-mix(in srgb, var(--secondary) 20%, transparent); }
-.category-badge.cat-housing { background: color-mix(in srgb, var(--accent-orange) 12%, transparent); color: var(--accent-orange); border-color: color-mix(in srgb, var(--accent-orange) 20%, transparent); }
-.category-badge.cat-transport { background: color-mix(in srgb, var(--accent-teal) 12%, transparent); color: var(--accent-teal); border-color: color-mix(in srgb, var(--accent-teal) 20%, transparent); }
-.category-badge.cat-miscellaneous { background: color-mix(in srgb, var(--text-secondary) 12%, transparent); color: var(--text-secondary); border-color: color-mix(in srgb, var(--text-secondary) 20%, transparent); }
+.category-badge.cat-salary { background: color-mix(in srgb, var(--color-cat-salary) 12%, transparent); color: var(--color-cat-salary); border-color: color-mix(in srgb, var(--color-cat-salary) 20%, transparent); }
+.category-badge.cat-freelance { background: color-mix(in srgb, var(--color-cat-freelance) 12%, transparent); color: var(--color-cat-freelance); border-color: color-mix(in srgb, var(--color-cat-freelance) 20%, transparent); }
+.category-badge.cat-investments { background: color-mix(in srgb, var(--color-cat-investments) 12%, transparent); color: var(--color-cat-investments); border-color: color-mix(in srgb, var(--color-cat-investments) 20%, transparent); }
+.category-badge.cat-food { background: color-mix(in srgb, var(--color-cat-food) 12%, transparent); color: var(--color-cat-food); border-color: color-mix(in srgb, var(--color-cat-food) 20%, transparent); }
+.category-badge.cat-utilities { background: color-mix(in srgb, var(--color-cat-utilities) 12%, transparent); color: var(--color-cat-utilities); border-color: color-mix(in srgb, var(--color-cat-utilities) 20%, transparent); }
+.category-badge.cat-entertainment { background: color-mix(in srgb, var(--color-cat-entertainment) 12%, transparent); color: var(--color-cat-entertainment); border-color: color-mix(in srgb, var(--color-cat-entertainment) 20%, transparent); }
+.category-badge.cat-housing { background: color-mix(in srgb, var(--color-cat-housing) 12%, transparent); color: var(--color-cat-housing); border-color: color-mix(in srgb, var(--color-cat-housing) 20%, transparent); }
+.category-badge.cat-transport { background: color-mix(in srgb, var(--color-cat-transport) 12%, transparent); color: var(--color-cat-transport); border-color: color-mix(in srgb, var(--color-cat-transport) 20%, transparent); }
+.category-badge.cat-miscellaneous { background: color-mix(in srgb, var(--color-cat-miscellaneous) 12%, transparent); color: var(--color-cat-miscellaneous); border-color: color-mix(in srgb, var(--color-cat-miscellaneous) 20%, transparent); }
+
+/* Brand Logo Badges next to Transaction Descriptions */
+.brand-logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--shape-small);
+  font-size: 0.72rem;
+  font-weight: 700;
+  vertical-align: middle;
+  margin-left: 8px;
+  border: 1px solid transparent;
+}
 
 .col-amount {
   font-family: var(--font-title);

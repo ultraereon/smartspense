@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A premium glassmorphic Expense Tracker with dynamic visual charts, budgeting, search, filtering, and local data persistence. Built to impress.">
+  <meta name="description"
+    content="A premium glassmorphic Expense Tracker with dynamic visual charts, budgeting, search, filtering, and local data persistence. Built to impress.">
   <meta name="author" content="Portfolio Project">
-  <title>SmartSpense // Premium Expense Tracker</title>
-  
+  <title>SmartSpense // Expense Tracker by ultraereon</title>
+
   <!-- Font and CDNs -->
   <link rel="stylesheet" href="styles.css">
-  
+
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
+
   <!-- Lucide Icons CDN -->
   <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
 </head>
+
 <body class="dark-mode">
 
   <div class="app-container">
-    
+
     <!-- --- App Header --- -->
     <header class="app-header glass-card">
       <div class="brand">
@@ -31,7 +34,7 @@
           <p style="font-size: 0.8rem; color: var(--text-secondary);">Recruiter-Grade Financial Intelligence</p>
         </div>
       </div>
-      
+
       <div class="header-actions">
         <button id="themeToggleBtn" class="btn-secondary" title="Switch Theme">
           <i id="themeToggleIcon" data-lucide="sun"></i>
@@ -48,7 +51,8 @@
             <i data-lucide="sparkles"></i>
           </div>
           <h2>Welcome to SmartSpense</h2>
-          <p>A recruiter-grade financial dashboard. Get started by exploring how to track expenses, manage category budgets, and analyze cash flows with a quick interactive tour.</p>
+          <p>A recruiter-grade financial dashboard. Get started by exploring how to track expenses, manage category
+            budgets, and analyze cash flows with a quick interactive tour.</p>
         </div>
         <div class="welcome-sheet-actions">
           <button class="btn-primary" onclick="startTourFromOverlay()"><i data-lucide="play"></i> Start Tour</button>
@@ -64,7 +68,7 @@
           <i data-lucide="search" class="search-icon"></i>
           <input type="text" id="searchQuery" placeholder="Search description, notes...">
         </div>
-        
+
         <select id="filterCategory">
           <option value="all">All Categories</option>
           <option value="Salary">Salary</option>
@@ -162,14 +166,18 @@
     <!-- --- Welcome Card Grid Placeholder --- -->
     <section id="welcomeFeaturesSection" class="glass-card hidden">
       <div class="welcome-features-container">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 8px;">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 8px;">
           <div>
-            <h2><i data-lucide="sparkles" style="color: var(--accent-teal)"></i> SmartSpense Financial Intelligence Overview</h2>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Your ledger is currently empty. Here is what your interactive dashboard will display once you start recording transactions:</p>
+            <h2><i data-lucide="sparkles" style="color: var(--accent-teal)"></i> SmartSpense Financial Intelligence
+              Overview</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Your ledger is currently empty. Here is what
+              your interactive dashboard will display once you start recording transactions:</p>
           </div>
-          <button id="btnLoadDemo" class="btn-secondary" onclick="loadDemoData()"><i data-lucide="database"></i> Load Demo Data</button>
+          <button id="btnLoadDemo" class="btn-secondary" onclick="loadDemoData()"><i data-lucide="database"></i> Load
+            Demo Data</button>
         </div>
-        
+
         <div class="welcome-grid">
           <!-- Card 1: Doughnut Chart -->
           <div class="welcome-feat-card">
@@ -177,7 +185,8 @@
               <i data-lucide="pie-chart" style="color: var(--primary)"></i>
               Category Expenditures
             </div>
-            <p>Analyzes and partitions your spending dynamically. Shows proportion percentages for food, housing, entertainment, transport and utilities.</p>
+            <p>Analyzes and partitions your spending dynamically. Shows proportion percentages for food, housing,
+              entertainment, transport and utilities.</p>
             <div class="mock-graphic">
               <div class="mock-doughnut"></div>
             </div>
@@ -189,16 +198,21 @@
               <i data-lucide="sliders" style="color: var(--accent-orange)"></i>
               Interactive Budgets
             </div>
-            <p>Sets monthly limits. SmartSpense highlights targets and warns you in real-time if expenditure exceeds your caps.</p>
+            <p>Sets monthly limits. SmartSpense highlights targets and warns you in real-time if expenditure exceeds
+              your caps.</p>
             <div class="mock-graphic">
               <div class="mock-budgets-container">
                 <div class="mock-budget-row">
                   <div class="mock-budget-label"><span>Food</span><span>82%</span></div>
-                  <div class="mock-budget-bar"><div class="mock-budget-fill" style="width: 82%; background-color: var(--accent-orange);"></div></div>
+                  <div class="mock-budget-bar">
+                    <div class="mock-budget-fill" style="width: 82%; background-color: var(--accent-orange);"></div>
+                  </div>
                 </div>
                 <div class="mock-budget-row">
                   <div class="mock-budget-label"><span>Entertainment</span><span>Over Limit</span></div>
-                  <div class="mock-budget-bar"><div class="mock-budget-fill" style="width: 100%; background-color: var(--accent-red);"></div></div>
+                  <div class="mock-budget-bar">
+                    <div class="mock-budget-fill" style="width: 100%; background-color: var(--accent-red);"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -210,7 +224,8 @@
               <i data-lucide="bar-chart-3" style="color: var(--accent-teal)"></i>
               Cash Flow History
             </div>
-            <p>Compares income patterns side-by-side with outgoings chronologically. Tracks monthly surpluses and savings rates.</p>
+            <p>Compares income patterns side-by-side with outgoings chronologically. Tracks monthly surpluses and
+              savings rates.</p>
             <div class="mock-graphic">
               <div class="mock-bars-container">
                 <div class="mock-bar-pair">
@@ -234,15 +249,15 @@
 
     <!-- --- Main Workspace (Sidebar + Transaction List) --- -->
     <section class="workspace-grid">
-      
+
       <!-- Sidebar Controls: Form & Budgets -->
       <div class="workspace-sidebar">
-        
+
         <!-- Transaction Form -->
         <div id="transactionFormSection" class="glass-card">
           <h2 id="formTitle"><i data-lucide="plus-circle" style="color: var(--accent-teal)"></i> Add Transaction</h2>
           <form id="transactionForm">
-            
+
             <div class="form-group">
               <label for="txDescription">Description *</label>
               <input type="text" id="txDescription" required placeholder="e.g. Weekly Groceries">
@@ -303,9 +318,10 @@
         <!-- Category Budgets Limits Manager -->
         <div class="glass-card">
           <h2><i data-lucide="sliders" style="color: var(--accent-orange)"></i> Monthly Budgets</h2>
-          
+
           <!-- Edit budget form (inline drawer style) -->
-          <form id="budgetEditForm" style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--input-border)">
+          <form id="budgetEditForm"
+            style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--input-border)">
             <div class="form-row">
               <div class="form-group" style="margin-bottom: 0;">
                 <label for="budgetSelectCategory">Category</label>
@@ -316,7 +332,8 @@
                 <input type="number" id="budgetValue" min="0" step="1" placeholder="0">
               </div>
             </div>
-            <button type="submit" class="btn-secondary" style="width: 100%; margin-top: 12px; padding: 8px 12px; font-size: 0.85rem;">
+            <button type="submit" class="btn-secondary"
+              style="width: 100%; margin-top: 12px; padding: 8px 12px; font-size: 0.85rem;">
               <i data-lucide="save"></i> Update Limit
             </button>
           </form>
@@ -330,21 +347,27 @@
         <!-- Siri Shortcuts Integration -->
         <div class="glass-card siri-shortcuts-card">
           <div class="siri-card-header" style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
-            <div class="siri-orb-container" style="position: relative; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: radial-gradient(circle, #5b9dff 10%, #7623ff 50%, #f603c4 100%); box-shadow: 0 0 15px rgba(118, 35, 255, 0.4); display: flex; align-items: center; justify-content: center;">
-              <div class="siri-orb" style="position: absolute; width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%); mix-blend-mode: overlay; animation: siriPulse 4s ease-in-out infinite;"></div>
+            <div class="siri-orb-container"
+              style="position: relative; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: radial-gradient(circle, #5b9dff 10%, #7623ff 50%, #f603c4 100%); box-shadow: 0 0 15px rgba(118, 35, 255, 0.4); display: flex; align-items: center; justify-content: center;">
+              <div class="siri-orb"
+                style="position: absolute; width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%); mix-blend-mode: overlay; animation: siriPulse 4s ease-in-out infinite;">
+              </div>
               <i data-lucide="mic" style="color: #fff; width: 18px; height: 18px; z-index: 2;"></i>
             </div>
             <div>
-              <h2 style="font-size: 1.25rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">Siri Shortcuts</h2>
-              <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.2;">Automate expense logging directly from iOS & macOS</p>
+              <h2 style="font-size: 1.25rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">Siri
+                Shortcuts</h2>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.2;">Automate expense logging
+                directly from iOS & macOS</p>
             </div>
           </div>
 
           <!-- Dynamic URL Builder -->
-          <div class="siri-section-title" style="font-size: 0.75rem; font-weight: 700; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; border-bottom: 1px solid var(--outline-variant); padding-bottom: 6px;">
+          <div class="siri-section-title"
+            style="font-size: 0.75rem; font-weight: 700; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; border-bottom: 1px solid var(--outline-variant); padding-bottom: 6px;">
             Siri Input URL Generator
           </div>
-          
+
           <div class="siri-builder-form">
             <div class="form-group" style="margin-bottom: 12px;">
               <label for="siriDesc">Description</label>
@@ -372,11 +395,15 @@
                   <!-- Populated via JS -->
                 </select>
               </div>
-              <div class="form-group" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
+              <div class="form-group"
+                style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
                 <label for="siriAuto" style="margin-bottom: 8px;">Auto-Save</label>
-                <label class="switch-container" style="position: relative; display: inline-block; width: 48px; height: 26px;">
-                  <input type="checkbox" id="siriAuto" checked style="opacity: 0; width: 0; height: 0; position: absolute;">
-                  <span class="switch-slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--outline); transition: .3s; border-radius: 34px;"></span>
+                <label class="switch-container"
+                  style="position: relative; display: inline-block; width: 48px; height: 26px;">
+                  <input type="checkbox" id="siriAuto" checked
+                    style="opacity: 0; width: 0; height: 0; position: absolute;">
+                  <span class="switch-slider"
+                    style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--outline); transition: .3s; border-radius: 34px;"></span>
                 </label>
               </div>
             </div>
@@ -384,51 +411,79 @@
             <div class="form-group" style="margin-bottom: 16px;">
               <label for="siriGeneratedUrl">Shortcut Integration URL</label>
               <div class="copy-url-wrapper">
-                <textarea id="siriGeneratedUrl" readonly rows="2" style="font-family: monospace; font-size: 0.72rem; padding: 10px; resize: none; background: rgba(0,0,0,0.15); border-color: var(--outline-variant); border-radius: var(--shape-small); line-height: 1.4; color: var(--text-secondary); width: 100%; box-sizing: border-box; overflow-y: hidden;"></textarea>
+                <textarea id="siriGeneratedUrl" readonly rows="2"
+                  style="font-family: monospace; font-size: 0.72rem; padding: 10px; resize: none; background: rgba(0,0,0,0.15); border-color: var(--outline-variant); border-radius: var(--shape-small); line-height: 1.4; color: var(--text-secondary); width: 100%; box-sizing: border-box; overflow-y: hidden;"></textarea>
               </div>
             </div>
 
             <div style="display: flex; gap: 8px;">
-              <button id="btnCopySiriUrl" class="btn-primary" style="flex-grow: 1; padding: 10px 14px; font-size: 0.82rem; height: 40px;">
+              <button id="btnCopySiriUrl" class="btn-primary"
+                style="flex-grow: 1; padding: 10px 14px; font-size: 0.82rem; height: 40px;">
                 <i data-lucide="copy"></i> Copy Link
               </button>
-              <button id="btnTestSiriUrl" class="btn-secondary" style="flex-grow: 1; padding: 10px 14px; font-size: 0.82rem; height: 40px;" title="Test in this browser window">
+              <button id="btnTestSiriUrl" class="btn-secondary"
+                style="flex-grow: 1; padding: 10px 14px; font-size: 0.82rem; height: 40px;"
+                title="Test in this browser window">
                 <i data-lucide="play-circle"></i> Test Link
               </button>
             </div>
           </div>
 
           <!-- Collapsible Setup Guide -->
-          <button id="siriGuideToggle" class="btn-secondary" style="width: 100%; margin-top: 16px; padding: 8px 12px; font-size: 0.82rem; display: flex; justify-content: space-between; align-items: center; border-color: var(--outline-variant); background: rgba(255, 255, 255, 0.02); height: 38px;">
-            <span style="display: flex; align-items: center; gap: 6px;"><i data-lucide="help-circle" style="width: 16px; height: 16px;"></i> iOS Setup Tutorial</span>
+          <button id="siriGuideToggle" class="btn-secondary"
+            style="width: 100%; margin-top: 16px; padding: 8px 12px; font-size: 0.82rem; display: flex; justify-content: space-between; align-items: center; border-color: var(--outline-variant); background: rgba(255, 255, 255, 0.02); height: 38px;">
+            <span style="display: flex; align-items: center; gap: 6px;"><i data-lucide="help-circle"
+                style="width: 16px; height: 16px;"></i> iOS Setup Tutorial</span>
             <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
           </button>
-          
-          <div id="siriGuideSection" class="siri-guide-content hidden" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--outline-variant);">
-            <ol class="siri-steps" style="list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 10px;">
+
+          <div id="siriGuideSection" class="siri-guide-content hidden"
+            style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--outline-variant);">
+            <ol class="siri-steps"
+              style="list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 10px;">
               <li style="display: flex; gap: 10px; align-items: flex-start;">
-                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">1</div>
-                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Open the <strong>Shortcuts</strong> app on iOS/macOS and create a new shortcut.</div>
+                <div class="step-num"
+                  style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">
+                  1</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Open
+                  the <strong>Shortcuts</strong> app on iOS/macOS and create a new shortcut.</div>
               </li>
               <li style="display: flex; gap: 10px; align-items: flex-start;">
-                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">2</div>
-                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add <strong>Ask for Input</strong> (Number) for the Amount.</div>
+                <div class="step-num"
+                  style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">
+                  2</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add
+                  <strong>Ask for Input</strong> (Number) for the Amount.</div>
               </li>
               <li style="display: flex; gap: 10px; align-items: flex-start;">
-                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">3</div>
-                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add <strong>Ask for Input</strong> (Text) for the Description.</div>
+                <div class="step-num"
+                  style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">
+                  3</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add
+                  <strong>Ask for Input</strong> (Text) for the Description.</div>
               </li>
               <li style="display: flex; gap: 10px; align-items: flex-start;">
-                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">4</div>
-                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add <strong>List</strong> / <strong>Menu</strong> for Categories if desired.</div>
+                <div class="step-num"
+                  style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">
+                  4</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add
+                  <strong>List</strong> / <strong>Menu</strong> for Categories if desired.</div>
               </li>
               <li style="display: flex; gap: 10px; align-items: flex-start;">
-                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">5</div>
-                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add a <strong>URL</strong> action, paste the generated URL, replacing fixed parameters with variables from steps 2-4.</div>
+                <div class="step-num"
+                  style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">
+                  5</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add a
+                  <strong>URL</strong> action, paste the generated URL, replacing fixed parameters with variables from
+                  steps 2-4.</div>
               </li>
               <li style="display: flex; gap: 10px; align-items: flex-start;">
-                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">6</div>
-                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add <strong>Open URL</strong> (opens Safari/app) to add the transaction instantly! Add to home screen for 1-tap logging.</div>
+                <div class="step-num"
+                  style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">
+                  6</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add
+                  <strong>Open URL</strong> (opens Safari/app) to add the transaction instantly! Add to home screen for
+                  1-tap logging.</div>
               </li>
             </ol>
           </div>
@@ -437,12 +492,12 @@
         <!-- Backup, Restore, factory reset -->
         <div class="glass-card settings-section">
           <h2><i data-lucide="database" style="color: var(--text-secondary)"></i> Data Administration</h2>
-          
+
           <div class="settings-btn-grid">
             <button id="btnExportCSV" class="btn-secondary" title="Export current month to CSV">
               <i data-lucide="file-spreadsheet"></i> CSV Export
             </button>
-            
+
             <button id="btnBackupExport" class="btn-secondary" title="Backup full app state to JSON">
               <i data-lucide="download"></i> Backup JSON
             </button>
@@ -465,7 +520,7 @@
       <!-- Main Ledger Area -->
       <div class="glass-card ledger-card">
         <h2><i data-lucide="history" style="color: var(--accent-teal)"></i> Transaction Ledger</h2>
-        
+
         <div class="table-responsive">
           <table>
             <thead>
@@ -506,10 +561,14 @@
       <p id="tourDescription">Monitor your Net Balance, total income, and savings rate in real-time.</p>
     </div>
     <div class="tour-footer">
-      <button id="btnTourSkip" class="btn-link" style="padding: 4px 8px; font-size: 0.8rem; color: var(--text-secondary);" onclick="endTour()">Skip Tour</button>
+      <button id="btnTourSkip" class="btn-link"
+        style="padding: 4px 8px; font-size: 0.8rem; color: var(--text-secondary);" onclick="endTour()">Skip
+        Tour</button>
       <div class="tour-actions-right">
-        <button id="btnTourPrev" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="prevTourStep()"><i data-lucide="chevron-left"></i> Back</button>
-        <button id="btnTourNext" class="btn-primary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="nextTourStep()">Next <i data-lucide="chevron-right"></i></button>
+        <button id="btnTourPrev" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;"
+          onclick="prevTourStep()"><i data-lucide="chevron-left"></i> Back</button>
+        <button id="btnTourNext" class="btn-primary" style="padding: 6px 12px; font-size: 0.8rem;"
+          onclick="nextTourStep()">Next <i data-lucide="chevron-right"></i></button>
       </div>
     </div>
   </div>
@@ -535,4 +594,5 @@
     });
   </script>
 </body>
+
 </html>

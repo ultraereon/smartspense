@@ -332,12 +332,14 @@ function renderTransactionsList(list) {
     });
 
     const categoryIcon = getCategoryIcon(t.category);
+    const brand = getBrandMetadata(t.description);
+    const logoHtml = brand ? `<span class="brand-logo-badge" style="background-color: ${brand.color}15; color: ${brand.color}; border-color: ${brand.color}30;" title="${brand.cleanName}">${brand.logo} ${brand.cleanName}</span>` : '';
 
     tr.innerHTML = `
       <td class="col-date">${dateFormatted}</td>
       <td class="col-desc">
         <div class="desc-content">
-          <span class="desc-title">${escapeHTML(t.description)}</span>
+          <span class="desc-title">${escapeHTML(t.description)} ${logoHtml}</span>
           ${t.notes ? `<span class="desc-notes">${escapeHTML(t.notes)}</span>` : ''}
         </div>
       </td>
@@ -1039,7 +1041,7 @@ function autoCategorizeExpense(desc) {
 
   const rules = [
     { category: 'Food', keywords: ['swiggy', 'zomato', 'restaurant', 'cafe', 'hotel', 'food', 'eat', 'bakery', 'kitchen', 'diner', 'starbucks', 'mcdonalds', 'kfc', 'burger', 'pizza', 'tea', 'coffee', 'canteen', 'grocer', 'supermarket', 'mart', 'dining'] },
-    { category: 'Transport', keywords: ['uber', 'ola', 'auto', 'metro', 'irctc', 'cab', 'petrol', 'fuel', 'shell', 'hpcl', 'iocl', 'bpcl', 'cng', 'toll', 'railway', 'transport', 'train', 'flight', 'airline', 'bus', 'parking'] },
+    { category: 'Transport', keywords: ['uber', 'ola', 'auto', 'metro', 'irctc', 'cab', 'petrol', 'fuel', 'shell', 'hpcl', 'iocl', 'bpcl', 'cng', 'toll', 'railway', 'transport', 'train', 'flight', 'airline', 'bus', 'parking', 'ksrtc', 'kerala state ro'] },
     { category: 'Utilities', keywords: ['electricity', 'kseb', 'kfon', 'keralavision', 'kwa', 'power', 'wifi', 'bescom', 'water', 'recharge', 'bill', 'telecom', 'jio', 'airtel', 'vi ', 'broadband', 'act ', 'gas', 'dth', 'insurance', 'rent'] },
     { category: 'Entertainment', keywords: ['netflix', 'apple', 'spotify', 'movie', 'pvr', 'booking', 'game', 'play', 'steam', 'theatre', 'show', 'concert', 'club', 'pub', 'bar ', 'subscrip'] }
   ];
@@ -1051,6 +1053,26 @@ function autoCategorizeExpense(desc) {
   }
 
   return 'Miscellaneous';
+}
+
+// Brand metadata lookup for logos/colors
+function getBrandMetadata(desc) {
+  if (!desc) return null;
+  const lowercase = desc.toLowerCase();
+  
+  if (lowercase.includes('netflix')) return { logo: '🍿', cleanName: 'Netflix', color: '#E50914' };
+  if (lowercase.includes('kfc')) return { logo: '🍗', cleanName: 'KFC', color: '#E4002B' };
+  if (lowercase.includes('kseb')) return { logo: '⚡', cleanName: 'KSEB', color: '#FFD700' };
+  if (lowercase.includes('kfon')) return { logo: '🌐', cleanName: 'KFON', color: '#00A859' };
+  if (lowercase.includes('keralavision')) return { logo: '📺', cleanName: 'Kerala Vision', color: '#005EA6' };
+  if (lowercase.includes('uber')) return { logo: '🚗', cleanName: 'Uber', color: '#000000' };
+  if (lowercase.includes('ola')) return { logo: '🚖', cleanName: 'Ola Cabs', color: '#97C93A' };
+  if (lowercase.includes('swiggy')) return { logo: '🛵', cleanName: 'Swiggy', color: '#FC8019' };
+  if (lowercase.includes('zomato')) return { logo: '🍅', cleanName: 'Zomato', color: '#CB202D' };
+  if (lowercase.includes('ksrtc')) return { logo: '🚌', cleanName: 'KSRTC', color: '#D32F2F' };
+  if (lowercase.includes('kerala state ro')) return { logo: '🚌', cleanName: 'KSRTC', color: '#D32F2F' };
+  
+  return null;
 }
 
 // --- Siri Shortcuts Integration ---
@@ -1126,11 +1148,17 @@ function handleIncomingShortcut() {
     finalDate = new Date().toISOString().split('T')[0]; // Default to today's date YYYY-MM-DD
   }
 
+  let finalDesc = desc.trim();
+  const brand = getBrandMetadata(desc);
+  if (brand) {
+    finalDesc = `to ${brand.cleanName} (${finalCategory})`;
+  }
+
   if (auto) {
     // Add transaction automatically
     const transactionData = {
       id: 'tx-' + Date.now(),
-      description: desc.trim(),
+      description: finalDesc,
       amount: amount,
       type: finalType,
       category: finalCategory,
@@ -1143,13 +1171,13 @@ function handleIncomingShortcut() {
     setupMonthSelector();
 
     // Custom Siri Toast with premium animation
-    showSiriSuccessToast(`Added via Siri Shortcut`, `${desc} — ₹${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`);
+    showSiriSuccessToast(`Added via Siri Shortcut`, `${finalDesc} — ₹${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, finalCategory);
 
     // Clean up URL query parameters to avoid duplicate submission on refresh
     window.history.replaceState({}, document.title, window.location.pathname);
   } else {
     // Pre-fill the form for user review
-    document.getElementById('txDescription').value = desc.trim();
+    document.getElementById('txDescription').value = finalDesc;
     document.getElementById('txAmount').value = amount;
     document.getElementById('txType').value = finalType;
 
@@ -1170,14 +1198,14 @@ function handleIncomingShortcut() {
     }
 
     // Custom Siri Toast explaining action
-    showSiriSuccessToast(`Pre-filled via Siri Shortcut`, `Review details and click Add Transaction to save.`);
+    showSiriSuccessToast(`Pre-filled via Siri Shortcut`, `Review details and click Add Transaction to save.`, finalCategory);
 
     // Clean up URL query parameters
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 }
 
-function showSiriSuccessToast(title, message) {
+function showSiriSuccessToast(title, message, category) {
   const container = document.getElementById('toastContainer');
   if (!container) return;
 
@@ -1193,6 +1221,20 @@ function showSiriSuccessToast(title, message) {
       <div class="siri-toast-message">${message}</div>
     </div>
   `;
+
+  // Apply category-specific colors to toast border, shadow, and title
+  if (category) {
+    const rootStyle = getComputedStyle(document.documentElement);
+    const catColor = rootStyle.getPropertyValue('--color-cat-' + category.toLowerCase()).trim();
+    if (catColor) {
+      toast.style.borderColor = catColor;
+      toast.style.boxShadow = `0 10px 40px color-mix(in srgb, ${catColor} 25%, transparent)`;
+      const titleEl = toast.querySelector('.siri-toast-title');
+      if (titleEl) {
+        titleEl.style.color = catColor;
+      }
+    }
+  }
 
   container.appendChild(toast);
   if (window.lucide) window.lucide.createIcons();

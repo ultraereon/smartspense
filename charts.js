@@ -23,16 +23,16 @@ function getDynamicColors() {
   const textSecondary = rootStyle.getPropertyValue('--text-secondary').trim();
 
   return {
-    Food: accentRed || '#E57373',
-    Utilities: accentTeal || '#4DEEEA',
-    Entertainment: primary || '#76E0A6',
-    Housing: secondary || '#9AD0EC',
-    Transport: accentTeal || '#4DEEEA',
-    Miscellaneous: textSecondary || '#C1C9C3',
-    Salary: accentEmerald || '#81C784',
-    Freelance: secondary || '#9AD0EC',
-    Investments: tertiary || '#A4C9FF',
-    IncomeDefault: accentEmerald || '#81C784'
+    Food: rootStyle.getPropertyValue('--color-cat-food').trim() || '#E57373',
+    Utilities: rootStyle.getPropertyValue('--color-cat-utilities').trim() || '#4DEEEA',
+    Entertainment: rootStyle.getPropertyValue('--color-cat-entertainment').trim() || '#C38FFF',
+    Housing: rootStyle.getPropertyValue('--color-cat-housing').trim() || '#FFB74D',
+    Transport: rootStyle.getPropertyValue('--color-cat-transport').trim() || '#FFD54F',
+    Miscellaneous: rootStyle.getPropertyValue('--color-cat-miscellaneous').trim() || '#C1C9C3',
+    Salary: rootStyle.getPropertyValue('--color-cat-salary').trim() || '#81C784',
+    Freelance: rootStyle.getPropertyValue('--color-cat-freelance').trim() || '#9AD0EC',
+    Investments: rootStyle.getPropertyValue('--color-cat-investments').trim() || '#A4C9FF',
+    IncomeDefault: rootStyle.getPropertyValue('--color-cat-salary').trim() || '#81C784'
   };
 }
 
