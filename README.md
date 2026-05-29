@@ -1,6 +1,5 @@
-# 📊 SmartSpense // Premium Expense Tracker SPA
-
-SmartSpense is a recruiter-grade, high-fidelity **Expense Tracker Single Page Application (SPA)** designed with a gorgeous, glassmorphic Material 3 Expressive UI. Built using modern Vanilla JavaScript, HTML5, and CSS3, it offers local state persistence, interactive analytics, budget checks, and data portability.
+# 📊 SmartSpense - Smart Expenses Tracker
+SmartSpense is a smart, high-fidelity **Expense Tracker Single Page Application (SPA)** designed with a gorgeous, glassmorphic Material 3 Expressive UI. Built using modern Vanilla JavaScript, HTML5, and CSS3, it offers local state persistence, interactive analytics, budget checks, and data portability. I built this project as an initial step for managing my personal expenses, and eventually create a Siri Automation script that helps me update expenses to this app after I perform a UPI transaction.
 
 ---
 
@@ -10,7 +9,7 @@ SmartSpense is a recruiter-grade, high-fidelity **Expense Tracker Single Page Ap
    * A step-by-step interactive onboarding experience that spotlights core features (KPI Cards, forms, budgets, settings, and the ledger).
    * Fully responsive; highlights and positions dynamically adapt during window resizing.
 
-2. **iOS-Style Welcome Sheet Overlay**:
+2. **Welcome Sheet Overlay**:
    * A premium welcome card overlay with a blurred backdrop displays on the first load to invite users to start the tour or load mock data.
    * Remembers the user's dismissal state in `LocalStorage` to prevent showing up again on subsequent refreshes.
 
@@ -45,14 +44,7 @@ SmartSpense is a recruiter-grade, high-fidelity **Expense Tracker Single Page Ap
    * **Factory Reset**: Clears local data and prompts onboarding.
 
 ---
-
-## 🎨 Theme Specs (Green & Blue Theme)
-
-SmartSpense features a custom-designed Material 3 palette:
-* **Primary (Mint Green)**: `#76E0A6` (Dark) / `#006D3C` (Light)
-* **Secondary/Tertiary (Blue tones)**: `#9AD0EC` and `#A4C9FF` (Dark) / `#006695` and `#005FAF` (Light)
-* **Dynamic Highlights**: Implemented using modern CSS `color-mix()` syntax, allowing highlights, badge borders, and spotlight overlays to dynamically blend with opacity configurations.
-
+**Dynamic Highlights**: Implemented using modern CSS `color-mix()` syntax, allowing highlights, badge borders, and spotlight overlays to dynamically blend with opacity configurations.
 ---
 
 ## 📁 File Structure
