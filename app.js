@@ -1107,12 +1107,17 @@ function handleIncomingShortcut() {
     }
   }
 
-  if (!finalCategory) {
+  if (!finalCategory || finalCategory === 'Miscellaneous') {
     if (finalType === 'expense') {
-      finalCategory = autoCategorizeExpense(desc);
-    } else {
-      finalCategory = 'Miscellaneous';
+      const autoCat = autoCategorizeExpense(desc);
+      if (autoCat !== 'Miscellaneous') {
+        finalCategory = autoCat;
+      }
     }
+  }
+  
+  if (!finalCategory) {
+    finalCategory = 'Miscellaneous';
   }
 
   // Date validation
