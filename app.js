@@ -1110,7 +1110,7 @@ function handleIncomingShortcut() {
     setupMonthSelector();
 
     // Custom Siri Toast with premium animation
-    showSiriSuccessToast(`Added via Siri Shortcut`, `${desc} — ₹${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`);
+    showSiriSuccessToast(`Added via Siri Shortcut`, `${desc} — ₹${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })} (Raw: "${amountStr}", Clean: "${cleanAmountStr}")`);
 
     // Clean up URL query parameters to avoid duplicate submission on refresh
     window.history.replaceState({}, document.title, window.location.pathname);
