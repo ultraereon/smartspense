@@ -1054,7 +1054,9 @@ function handleIncomingShortcut() {
     return;
   }
 
-  const amount = parseFloat(amountStr);
+  // Clean amountStr of any currency symbols, commas, or spaces (e.g. "Rs. 2,500.00" -> "2500.00")
+  const cleanAmountStr = amountStr.replace(/[^\d.-]/g, '');
+  const amount = parseFloat(cleanAmountStr);
   if (isNaN(amount) || amount <= 0) {
     showToast('Siri Shortcut Error: Invalid Amount.');
     window.history.replaceState({}, document.title, window.location.pathname);
