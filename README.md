@@ -1,4 +1,5 @@
 # 📊 SmartSpense - Smart Expenses Tracker
+
 SmartSpense is a smart, high-fidelity **Expense Tracker Single Page Application (SPA)** designed with a gorgeous, glassmorphic Material 3 Expressive UI. Built using modern Vanilla JavaScript, HTML5, and CSS3, it offers local state persistence, interactive analytics, budget checks, and data portability. I built this project as an initial step for managing my personal expenses, and eventually create a Siri Automation script that helps me update expenses to this app after I perform a UPI transaction.
 
 ---
@@ -9,7 +10,7 @@ SmartSpense is a smart, high-fidelity **Expense Tracker Single Page Application 
    * A step-by-step interactive onboarding experience that spotlights core features (KPI Cards, forms, budgets, settings, and the ledger).
    * Fully responsive; highlights and positions dynamically adapt during window resizing.
 
-2. **Welcome Sheet Overlay**:
+2. **iOS-Style Welcome Sheet Overlay**:
    * A premium welcome card overlay with a blurred backdrop displays on the first load to invite users to start the tour or load mock data.
    * Remembers the user's dismissal state in `LocalStorage` to prevent showing up again on subsequent refreshes.
 
@@ -43,8 +44,20 @@ SmartSpense is a smart, high-fidelity **Expense Tracker Single Page Application 
    * **JSON Restore**: Upload a backup file to restore your entire state instantly.
    * **Factory Reset**: Clears local data and prompts onboarding.
 
+8. **Siri Shortcuts & Automation Integration**:
+   * Log transactions hands-free or with 1-tap using iOS/macOS Siri Shortcuts.
+   * Leverages a client-side URL query parameter API to write directly to LocalStorage.
+   * Custom Apple-inspired Siri orb animation and status toast on incoming shortcut executions.
+
 ---
-**Dynamic Highlights**: Implemented using modern CSS `color-mix()` syntax, allowing highlights, badge borders, and spotlight overlays to dynamically blend with opacity configurations.
+
+## 🎨 Theme Specs (Green & Blue Theme)
+
+SmartSpense features a custom-designed Material 3 palette:
+* **Primary (Mint Green)**: `#76E0A6` (Dark) / `#006D3C` (Light)
+* **Secondary/Tertiary (Blue tones)**: `#9AD0EC` and `#A4C9FF` (Dark) / `#006695` and `#005FAF` (Light)
+* **Dynamic Highlights**: Implemented using modern CSS `color-mix()` syntax, allowing highlights, badge borders, and spotlight overlays to dynamically blend with opacity configurations.
+
 ---
 
 ## 📁 File Structure
@@ -62,6 +75,10 @@ SmartSpense is a smart, high-fidelity **Expense Tracker Single Page Application 
 
 ## 🚀 Getting Started
 
+### Live Access (GitHub Pages)
+SmartSpense is hosted live and is mobile-ready (perfect for Siri Shortcut setup):
+👉 **[https://ultraereon.github.io/smartspense/](https://ultraereon.github.io/smartspense/)**
+
 ### Prerequisites
 SmartSpense is pure front-end client code and requires **no compilation, bundlers, or node packages**. 
 
@@ -74,6 +91,14 @@ SmartSpense is pure front-end client code and requires **no compilation, bundler
    ```
    Then open **[http://localhost:8000](http://localhost:8000)** in your browser.
 
+### Deploying Your Own Instance
+To host your own copy on GitHub Pages:
+1. Go to your repository on GitHub.
+2. Click **Settings** -> **Pages** (under the "Code and automation" section).
+3. Under **Build and deployment**, set **Source** to `Deploy from a branch`.
+4. Choose the `main` branch and `/ (root)` folder, then click **Save**.
+5. Your live link will be generated in 1–2 minutes!
+
 ---
 
 ## ⚙️ Architecture & Implementation Notes
@@ -81,3 +106,26 @@ SmartSpense is pure front-end client code and requires **no compilation, bundler
 * **State-Driven Rendering**: Renders follow a uni-directional state flow. Changes in `state` trigger calculations which rebuild transaction lists, update KPI stats, redraw budget progress, and refresh Chart.js canvases.
 * **Asset Optimization**: Uses vector icons through the Lucide CDN, avoiding heavy image downloads.
 * **Modern CSS Techniques**: Leverage modern styling standards, using CSS Grid/Flexbox layouts, backdrop-filters, custom scrollbars, and `color-mix()` for high performance rendering without heavy utility library overrides.
+
+---
+
+## 📱 Siri Shortcuts & Automation API
+
+SmartSpense includes a built-in serverless URL parameter API that accepts transaction input from external applications like iOS Siri Shortcuts. 
+
+### How it Works
+When the hosted web app is opened with specific query parameters, it parses them, commits the transaction to `LocalStorage`, clears the URL query parameters to prevent duplicate entries, and launches a Siri success animation.
+
+### Parameter Schema
+| Parameter | Required | Type | Description |
+| :--- | :--- | :--- | :--- |
+| `action` | **Yes** | String | Must be set to `add-tx` |
+| `amount` | **Yes** | Number | The transaction value (e.g., `150.00`) |
+| `desc` | **Yes** | String | Title or description (e.g., `Coffee`) |
+| `category` | No | String | Case-insensitive category (e.g., `Food`, `Utilities`, `Salary`). Defaults to `Miscellaneous` |
+| `type` | No | String | `expense` or `income`. Defaults to `expense` |
+| `auto` | No | Boolean | Set to `true` to auto-save silently; `false` to pre-fill the form and review |
+| `notes` | No | String | Optional notes/memo content |
+
+### Step-by-Step iOS Shortcut Setup
+For convenience, an **interactive setup tutorial and URL generator** is built directly into the SmartSpense sidebar under **Siri Shortcuts**. You can customize the fields, copy the live URL template, and follow the guided instructions to configure your iPhone shortcut in minutes!
