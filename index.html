@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A premium glassmorphic Expense Tracker with dynamic visual charts, budgeting, search, filtering, and local data persistence. Built to impress.">
+  <meta name="author" content="Portfolio Project">
+  <title>AuraBudget // Premium Expense Tracker</title>
+  
+  <!-- Font and CDNs -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+</head>
+<body class="dark-mode">
+
+  <div class="app-container">
+    
+    <!-- --- App Header --- -->
+    <header class="app-header glass-card">
+      <div class="brand">
+        <div class="brand-icon">
+          <i data-lucide="wallet"></i>
+        </div>
+        <div>
+          <h1>AuraBudget</h1>
+          <p style="font-size: 0.8rem; color: var(--text-secondary);">Recruiter-Grade Financial Intelligence</p>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="btn-secondary" title="Switch Theme">
+          <i id="themeToggleIcon" data-lucide="sun"></i>
+          <span id="themeToggleText">Light Mode</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- iOS-Style Welcome Sheet Overlay -->
+    <div id="welcomeOverlay" class="welcome-overlay hidden">
+      <div class="welcome-sheet glass-card">
+        <div class="welcome-sheet-header">
+          <div class="welcome-sheet-icon">
+            <i data-lucide="sparkles"></i>
+          </div>
+          <h2>Welcome to AuraBudget</h2>
+          <p>A recruiter-grade financial dashboard. Get started by exploring how to track expenses, manage category budgets, and analyze cash flows with a quick interactive tour.</p>
+        </div>
+        <div class="welcome-sheet-actions">
+          <button class="btn-primary" onclick="startTourFromOverlay()"><i data-lucide="play"></i> Start Tour</button>
+          <button class="btn-secondary" onclick="dismissWelcomeOverlay()"><i data-lucide="x"></i> No Thanks</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- --- Filter & Control Panel --- -->
+    <section class="control-bar glass-card">
+      <div class="filters-group">
+        <div class="search-wrapper">
+          <i data-lucide="search" class="search-icon"></i>
+          <input type="text" id="searchQuery" placeholder="Search description, notes...">
+        </div>
+        
+        <select id="filterCategory">
+          <option value="all">All Categories</option>
+          <option value="Salary">Salary</option>
+          <option value="Freelance">Freelance</option>
+          <option value="Investments">Investments</option>
+          <option value="Food">Food</option>
+          <option value="Utilities">Utilities</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Housing">Housing</option>
+          <option value="Transport">Transport</option>
+          <option value="Miscellaneous">Miscellaneous</option>
+        </select>
+
+        <select id="filterType">
+          <option value="all">All Types</option>
+          <option value="income">Income Only</option>
+          <option value="expense">Expenses Only</option>
+        </select>
+      </div>
+
+      <div class="month-selector-wrapper">
+        <select id="filterMonth">
+          <!-- Populated dynamically via JS -->
+          <option value="current">Current Month</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- --- KPI Cards --- -->
+    <section class="kpi-grid">
+      <!-- Balance -->
+      <div class="kpi-card glass-card balance">
+        <div class="kpi-icon">
+          <i data-lucide="scale"></i>
+        </div>
+        <div class="kpi-info">
+          <span class="kpi-label">Net Balance</span>
+          <span id="overviewBalance" class="kpi-value">₹0.00</span>
+        </div>
+      </div>
+
+      <!-- Income -->
+      <div class="kpi-card glass-card income">
+        <div class="kpi-icon">
+          <i data-lucide="arrow-up-right"></i>
+        </div>
+        <div class="kpi-info">
+          <span class="kpi-label">Total Income</span>
+          <span id="overviewIncome" class="kpi-value">₹0.00</span>
+        </div>
+      </div>
+
+      <!-- Expenses -->
+      <div class="kpi-card glass-card expense">
+        <div class="kpi-icon">
+          <i data-lucide="arrow-down-left"></i>
+        </div>
+        <div class="kpi-info">
+          <span class="kpi-label">Total Expenses</span>
+          <span id="overviewExpense" class="kpi-value">₹0.00</span>
+        </div>
+      </div>
+
+      <!-- Savings Rate -->
+      <div class="kpi-card glass-card savings">
+        <div class="kpi-icon">
+          <i data-lucide="percent"></i>
+        </div>
+        <div class="kpi-info">
+          <span class="kpi-label">Savings Rate</span>
+          <span id="overviewSavings" class="kpi-value">0%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- --- Charts Section --- -->
+    <section id="dashboardChartsSection" class="charts-grid">
+      <!-- Category Expenses -->
+      <div class="glass-card">
+        <h2><i data-lucide="pie-chart" style="color: var(--primary)"></i> Category Spending</h2>
+        <div class="chart-wrapper">
+          <canvas id="categoryChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Historical Income vs Expense -->
+      <div class="glass-card">
+        <h2><i data-lucide="bar-chart-3" style="color: var(--accent-teal)"></i> Cash Flow History</h2>
+        <div class="chart-wrapper">
+          <canvas id="monthlyChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- --- Welcome Card Grid Placeholder --- -->
+    <section id="welcomeFeaturesSection" class="glass-card hidden">
+      <div class="welcome-features-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 8px;">
+          <div>
+            <h2><i data-lucide="sparkles" style="color: var(--accent-teal)"></i> AuraBudget Financial Intelligence Overview</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Your ledger is currently empty. Here is what your interactive dashboard will display once you start recording transactions:</p>
+          </div>
+          <button id="btnLoadDemo" class="btn-secondary" onclick="loadDemoData()"><i data-lucide="database"></i> Load Demo Data</button>
+        </div>
+        
+        <div class="welcome-grid">
+          <!-- Card 1: Doughnut Chart -->
+          <div class="welcome-feat-card">
+            <div class="feat-icon-title">
+              <i data-lucide="pie-chart" style="color: var(--primary)"></i>
+              Category Expenditures
+            </div>
+            <p>Analyzes and partitions your spending dynamically. Shows proportion percentages for food, housing, entertainment, transport and utilities.</p>
+            <div class="mock-graphic">
+              <div class="mock-doughnut"></div>
+            </div>
+          </div>
+
+          <!-- Card 2: Budgets -->
+          <div class="welcome-feat-card">
+            <div class="feat-icon-title">
+              <i data-lucide="sliders" style="color: var(--accent-orange)"></i>
+              Interactive Budgets
+            </div>
+            <p>Sets monthly limits. AuraBudget highlights targets and warns you in real-time if expenditure exceeds your caps.</p>
+            <div class="mock-graphic">
+              <div class="mock-budgets-container">
+                <div class="mock-budget-row">
+                  <div class="mock-budget-label"><span>Food</span><span>82%</span></div>
+                  <div class="mock-budget-bar"><div class="mock-budget-fill" style="width: 82%; background-color: var(--accent-orange);"></div></div>
+                </div>
+                <div class="mock-budget-row">
+                  <div class="mock-budget-label"><span>Entertainment</span><span>Over Limit</span></div>
+                  <div class="mock-budget-bar"><div class="mock-budget-fill" style="width: 100%; background-color: var(--accent-red);"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Trends -->
+          <div class="welcome-feat-card">
+            <div class="feat-icon-title">
+              <i data-lucide="bar-chart-3" style="color: var(--accent-teal)"></i>
+              Cash Flow History
+            </div>
+            <p>Compares income patterns side-by-side with outgoings chronologically. Tracks monthly surpluses and savings rates.</p>
+            <div class="mock-graphic">
+              <div class="mock-bars-container">
+                <div class="mock-bar-pair">
+                  <div class="mock-bar" style="height: 60px; background-color: var(--accent-emerald);"></div>
+                  <div class="mock-bar" style="height: 40px; background-color: var(--secondary);"></div>
+                </div>
+                <div class="mock-bar-pair">
+                  <div class="mock-bar" style="height: 80px; background-color: var(--accent-emerald);"></div>
+                  <div class="mock-bar" style="height: 45px; background-color: var(--secondary);"></div>
+                </div>
+                <div class="mock-bar-pair">
+                  <div class="mock-bar" style="height: 75px; background-color: var(--accent-emerald);"></div>
+                  <div class="mock-bar" style="height: 90px; background-color: var(--secondary);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --- Main Workspace (Sidebar + Transaction List) --- -->
+    <section class="workspace-grid">
+      
+      <!-- Sidebar Controls: Form & Budgets -->
+      <div class="workspace-sidebar">
+        
+        <!-- Transaction Form -->
+        <div id="transactionFormSection" class="glass-card">
+          <h2 id="formTitle"><i data-lucide="plus-circle" style="color: var(--accent-teal)"></i> Add Transaction</h2>
+          <form id="transactionForm">
+            
+            <div class="form-group">
+              <label for="txDescription">Description *</label>
+              <input type="text" id="txDescription" required placeholder="e.g. Weekly Groceries">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="txAmount">Amount (₹) *</label>
+                <input type="number" id="txAmount" step="0.01" min="0.01" required placeholder="0.00">
+              </div>
+
+              <div class="form-group">
+                <label for="txType">Type</label>
+                <select id="txType">
+                  <option value="expense">Expense</option>
+                  <option value="income">Income</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="txCategory">Category</label>
+                <select id="txCategory">
+                  <!-- Dynamically switches depending on Type via JS -->
+                  <option value="Food">Food</option>
+                  <option value="Utilities">Utilities</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Housing">Housing</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Miscellaneous">Miscellaneous</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="txDate">Date *</label>
+                <input type="date" id="txDate" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="txNotes">Notes (Optional)</label>
+              <textarea id="txNotes" placeholder="Additional details..."></textarea>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button type="submit" id="txFormSubmitBtn" class="btn-primary" style="flex-grow: 1;">
+                <i data-lucide="plus"></i> Add Transaction
+              </button>
+              <button type="button" id="btnResetForm" class="btn-secondary hidden" title="Cancel Edit">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Category Budgets Limits Manager -->
+        <div class="glass-card">
+          <h2><i data-lucide="sliders" style="color: var(--accent-orange)"></i> Monthly Budgets</h2>
+          
+          <!-- Edit budget form (inline drawer style) -->
+          <form id="budgetEditForm" style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--input-border)">
+            <div class="form-row">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="budgetSelectCategory">Category</label>
+                <select id="budgetSelectCategory"></select>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="budgetValue">Limit (₹)</label>
+                <input type="number" id="budgetValue" min="0" step="1" placeholder="0">
+              </div>
+            </div>
+            <button type="submit" class="btn-secondary" style="width: 100%; margin-top: 12px; padding: 8px 12px; font-size: 0.85rem;">
+              <i data-lucide="save"></i> Update Limit
+            </button>
+          </form>
+
+          <!-- Budgets progress bars -->
+          <div id="budgetProgressList">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- Backup, Restore, factory reset -->
+        <div class="glass-card settings-section">
+          <h2><i data-lucide="database" style="color: var(--text-secondary)"></i> Data Administration</h2>
+          
+          <div class="settings-btn-grid">
+            <button id="btnExportCSV" class="btn-secondary" title="Export current month to CSV">
+              <i data-lucide="file-spreadsheet"></i> CSV Export
+            </button>
+            
+            <button id="btnBackupExport" class="btn-secondary" title="Backup full app state to JSON">
+              <i data-lucide="download"></i> Backup JSON
+            </button>
+          </div>
+
+          <div class="file-input-wrapper">
+            <button class="btn-secondary" style="width: 100%;">
+              <i data-lucide="upload"></i> Restore Backup
+            </button>
+            <input type="file" id="fileImportBackup" accept=".json">
+          </div>
+
+          <button id="btnFactoryReset" class="btn-danger" style="width: 100%;">
+            <i data-lucide="refresh-cw"></i> Reset Database to Clean State
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Main Ledger Area -->
+      <div class="glass-card ledger-card">
+        <h2><i data-lucide="history" style="color: var(--accent-teal)"></i> Transaction Ledger</h2>
+        
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th class="col-date">Date</th>
+                <th class="col-desc">Description</th>
+                <th class="col-cat">Category</th>
+                <th class="col-amount" style="text-align: right;">Amount</th>
+                <th class="col-actions" style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="transactionTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+
+          <!-- Empty State -->
+          <div id="emptyStateContainer" class="empty-state hidden">
+            <i data-lucide="clipboard-x" class="empty-state-icon"></i>
+            <h3>No Transactions Found</h3>
+            <p>Try refining your search queries or category filters.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- Floating Guided Tour Tutorial Onboarding Box -->
+  <div id="tutorialBox" class="tutorial-box hidden">
+    <div class="tour-header">
+      <span class="tour-step-indicator" id="tourStepIndicator">Step 1 of 5</span>
+      <span class="tour-category" style="font-weight: 500;">Guided Tour</span>
+    </div>
+    <div class="tour-body">
+      <h3 id="tourTitle">Summary Cards</h3>
+      <p id="tourDescription">Monitor your Net Balance, total income, and savings rate in real-time.</p>
+    </div>
+    <div class="tour-footer">
+      <button id="btnTourSkip" class="btn-link" style="padding: 4px 8px; font-size: 0.8rem; color: var(--text-secondary);" onclick="endTour()">Skip Tour</button>
+      <div class="tour-actions-right">
+        <button id="btnTourPrev" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="prevTourStep()"><i data-lucide="chevron-left"></i> Back</button>
+        <button id="btnTourNext" class="btn-primary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="nextTourStep()">Next <i data-lucide="chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Toast Notification Container -->
+  <div id="toastContainer"></div>
+
+  <!-- Business scripts -->
+  <script src="seed-data.js?v=2"></script>
+  <script src="charts.js?v=2"></script>
+  <script src="app.js?v=2"></script>
+
+  <!-- Interactive hover card glow cursor position updates -->
+  <script>
+    document.querySelectorAll('.glass-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+  </script>
+</body>
+</html>
