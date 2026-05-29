@@ -10,8 +10,8 @@ SmartSpense is a smart, high-fidelity **Expense Tracker Single Page Application 
    * A step-by-step interactive onboarding experience that spotlights core features (KPI Cards, forms, budgets, settings, and the ledger).
    * Fully responsive; highlights and positions dynamically adapt during window resizing.
 
-2. **iOS-Style Welcome Sheet Overlay**:
-   * A premium welcome card overlay with a blurred backdrop displays on the first load to invite users to start the tour or load mock data.
+2. **Welcome Sheet Overlay**:
+   * A premium welcome card experience displays on the first load to invite users to start the tour or load mock data.
    * Remembers the user's dismissal state in `LocalStorage` to prevent showing up again on subsequent refreshes.
 
 3. **Dynamic Visual Analytics (Chart.js)**:
