@@ -52,7 +52,7 @@ function applyTheme() {
   const body = document.body;
   const themeToggleIcon = document.getElementById('themeToggleIcon');
   const themeToggleText = document.getElementById('themeToggleText');
-  
+
   if (state.theme === 'light') {
     body.classList.remove('dark-mode');
     body.classList.add('light-mode');
@@ -64,10 +64,10 @@ function applyTheme() {
     if (themeToggleIcon) themeToggleIcon.setAttribute('data-lucide', 'sun');
     if (themeToggleText) themeToggleText.textContent = 'Light Mode';
   }
-  
+
   // Re-render icons and update charts since grid colors change
   if (window.lucide) window.lucide.createIcons();
-  
+
   // Update charts if they exist
   if (typeof updateCategoryChart === 'function' && state.transactions.length > 0) {
     updateCharts();
@@ -78,7 +78,7 @@ function applyTheme() {
 function loadData() {
   const localTransactions = localStorage.getItem('expense_tracker_transactions');
   const localBudgets = localStorage.getItem('expense_tracker_budgets');
-  
+
   if (localTransactions) {
     state.transactions = JSON.parse(localTransactions);
   } else {
@@ -133,16 +133,16 @@ function setupMonthSelector() {
 
   // Sort months descending
   const sortedMonths = Array.from(months).sort().reverse();
-  
+
   sortedMonths.forEach(m => {
     const [year, monthVal] = m.split('-');
     const dateObj = new Date(parseInt(year), parseInt(monthVal) - 1, 1);
     const label = dateObj.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
-    
+
     // Avoid duplicating if it matches current or last month
     const curMonthKey = getMonthKey(0);
     const lastMonthKey = getMonthKey(-1);
-    
+
     if (m !== curMonthKey && m !== lastMonthKey) {
       const opt = document.createElement('option');
       opt.value = m;
@@ -165,7 +165,7 @@ function getMonthKey(offset = 0) {
 // Filter transactions by the selected month
 function getTransactionsByMonth(transactions, monthFilterVal) {
   if (monthFilterVal === 'all') return transactions;
-  
+
   let targetKey = '';
   if (monthFilterVal === 'current') {
     targetKey = getMonthKey(0);
@@ -217,7 +217,7 @@ function render() {
   if (isLedgerEmpty) {
     if (chartsSec) chartsSec.classList.add('hidden');
     if (welcomeSec) welcomeSec.classList.remove('hidden');
-    
+
     // First time welcome overlay trigger
     const onboardingShown = localStorage.getItem('smartspense_onboarding_shown');
     if (!onboardingShown) {
@@ -230,13 +230,13 @@ function render() {
   }
 
   const monthTransactions = getTransactionsByMonth(state.transactions, state.filters.month);
-  
+
   // Apply Search & Category filters
   const filtered = monthTransactions.filter(t => {
-    const matchesSearch = t.description.toLowerCase().includes(state.filters.search.toLowerCase()) || 
-                          t.category.toLowerCase().includes(state.filters.search.toLowerCase()) ||
-                          (t.notes && t.notes.toLowerCase().includes(state.filters.search.toLowerCase()));
-    
+    const matchesSearch = t.description.toLowerCase().includes(state.filters.search.toLowerCase()) ||
+      t.category.toLowerCase().includes(state.filters.search.toLowerCase()) ||
+      (t.notes && t.notes.toLowerCase().includes(state.filters.search.toLowerCase()));
+
     const matchesCategory = state.filters.category === 'all' || t.category.toLowerCase() === state.filters.category.toLowerCase();
     const matchesType = state.filters.type === 'all' || t.type === state.filters.type;
 
@@ -288,7 +288,7 @@ function updateCharts(filteredTransactions = null, monthTransactions = null) {
   }
 
   const isDark = state.theme === 'dark';
-  
+
   if (typeof updateCategoryChart === 'function') {
     // Category doughnut focuses on currently filtered/viewed transactions
     updateCategoryChart(filteredTransactions, isDark);
@@ -319,7 +319,7 @@ function renderTransactionsList(list) {
   sorted.forEach(t => {
     const tr = document.createElement('tr');
     tr.className = `transaction-row ${t.type}`;
-    
+
     const formattedAmount = `${t.type === 'income' ? '+' : '-'}₹${parseFloat(t.amount).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
@@ -383,7 +383,7 @@ function renderBudgets(monthTransactions) {
     const spent = categorySpending[cat] || 0;
     const percent = Math.min((spent / limit) * 100, 100);
     const isOver = spent > limit;
-    
+
     // Status colors: Red if over, Orange if >= 85%, Green otherwise
     let barColor = 'var(--accent-teal)';
     if (isOver) {
@@ -398,8 +398,8 @@ function renderBudgets(monthTransactions) {
       <div class="budget-meta">
         <span class="budget-cat-name">${cat}</span>
         <span class="budget-values">
-          <strong>₹${spent.toLocaleString(undefined, {maximumFractionDigits:0})}</strong> 
-          / ₹${limit.toLocaleString(undefined, {maximumFractionDigits:0})}
+          <strong>₹${spent.toLocaleString(undefined, { maximumFractionDigits: 0 })}</strong> 
+          / ₹${limit.toLocaleString(undefined, { maximumFractionDigits: 0 })}
         </span>
       </div>
       <div class="progress-track">
@@ -473,7 +473,7 @@ function setupEventListeners() {
   const form = document.getElementById('transactionForm');
   if (form) {
     form.addEventListener('submit', handleTransactionSubmit);
-    
+
     // Dynamic Form Category Selection based on Type (Income vs Expense)
     const typeSelect = document.getElementById('txType');
     typeSelect.addEventListener('change', handleFormTypeChange);
@@ -489,17 +489,17 @@ function setupEventListeners() {
   const budgetForm = document.getElementById('budgetEditForm');
   if (budgetForm) {
     budgetForm.addEventListener('submit', handleBudgetSubmit);
-    
+
     // Load current budget value when category changes in budget form
     const budgetSelectCat = document.getElementById('budgetSelectCategory');
     const budgetInputVal = document.getElementById('budgetValue');
-    
+
     if (budgetSelectCat && budgetInputVal) {
       const updateBudgetInputValue = () => {
         const cat = budgetSelectCat.value;
         budgetInputVal.value = state.budgets[cat] || '';
       };
-      
+
       budgetSelectCat.addEventListener('change', updateBudgetInputValue);
       // Trigger initially
       setTimeout(updateBudgetInputValue, 100);
@@ -536,7 +536,7 @@ function handleFormTypeChange() {
 
   categorySelect.innerHTML = '';
 
-  const options = type === 'income' 
+  const options = type === 'income'
     ? ['Salary', 'Freelance', 'Investments', 'Miscellaneous']
     : ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Miscellaneous'];
 
@@ -554,15 +554,15 @@ function clearTransactionForm() {
   if (!form) return;
   form.reset();
   state.editingId = null;
-  
+
   // Reset form layout/labels
   document.getElementById('txFormSubmitBtn').innerHTML = '<i data-lucide="plus"></i> Add Transaction';
   document.getElementById('formTitle').textContent = 'Add Transaction';
   document.getElementById('btnResetForm').classList.add('hidden');
-  
+
   // Set default date to today
   document.getElementById('txDate').valueAsDate = new Date();
-  
+
   handleFormTypeChange(); // ensure category options match type
   if (window.lucide) window.lucide.createIcons();
 }
@@ -608,7 +608,7 @@ function handleTransactionSubmit(e) {
   setupMonthSelector(); // In case a transaction is added to a new month
   clearTransactionForm();
   render();
-  
+
   // Show visual toast notification (optional premium detail)
   showToast(state.editingId ? 'Transaction updated successfully!' : 'Transaction added successfully!');
 }
@@ -624,11 +624,11 @@ function editTransaction(id) {
   document.getElementById('txDescription').value = tx.description;
   document.getElementById('txAmount').value = tx.amount;
   document.getElementById('txType').value = tx.type;
-  
+
   // Populate category options for this type and select it
   handleFormTypeChange();
   document.getElementById('txCategory').value = tx.category;
-  
+
   document.getElementById('txDate').value = tx.date;
   document.getElementById('txNotes').value = tx.notes || '';
 
@@ -652,7 +652,7 @@ function deleteTransaction(id) {
   setupMonthSelector();
   render();
   showToast('Transaction deleted.');
-  
+
   // If we were editing the deleted transaction, clear the form
   if (state.editingId === id) {
     clearTransactionForm();
@@ -682,7 +682,7 @@ function handleBudgetSubmit(e) {
 // Export transactions list to CSV file
 function exportToCSV() {
   const currentMonthTx = getTransactionsByMonth(state.transactions, state.filters.month);
-  
+
   if (currentMonthTx.length === 0) {
     alert('No transactions to export in the selected filter range.');
     return;
@@ -738,10 +738,10 @@ function importFromJSON(e) {
   if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = function(evt) {
+  reader.onload = function (evt) {
     try {
       const importedData = JSON.parse(evt.target.result);
-      
+
       // Basic structure validation
       if (!importedData.transactions || !Array.isArray(importedData.transactions) || !importedData.budgets) {
         throw new Error('Invalid file structure. Make sure this is a backup JSON exported from the app.');
@@ -753,7 +753,7 @@ function importFromJSON(e) {
       setupMonthSelector();
       render();
       showToast('Backup restored successfully!');
-      
+
       // Reset file input
       e.target.value = '';
     } catch (err) {
@@ -770,7 +770,7 @@ function handleFactoryReset() {
   localStorage.removeItem('expense_tracker_transactions');
   localStorage.removeItem('expense_tracker_budgets');
   localStorage.removeItem('smartspense_onboarding_shown'); // Clear flag to trigger overlay again
-  
+
   loadData();
   setupMonthSelector();
   clearTransactionForm();
@@ -816,7 +816,7 @@ function showToast(message) {
     <i data-lucide="info" class="toast-icon"></i>
     <span>${message}</span>
   `;
-  
+
   container.appendChild(toast);
   if (window.lucide) window.lucide.createIcons();
 
@@ -886,7 +886,7 @@ function endTour() {
   document.body.classList.remove('tutorial-overlay-active');
   const box = document.getElementById('tutorialBox');
   if (box) box.classList.add('hidden');
-  
+
   // Clear highlights
   document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
 }
@@ -894,52 +894,52 @@ function endTour() {
 function renderTourStep() {
   const step = tourState.steps[tourState.currentStep];
   const targetEl = document.getElementById(step.elementId) || document.querySelector('.' + step.elementId);
-  
+
   // Remove previous highlights
   document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
-  
+
   if (!targetEl) {
     nextTourStep();
     return;
   }
-  
+
   // Highlight target
   targetEl.classList.add('tour-highlight');
   targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  
+
   // Update text
   document.getElementById('tourStepIndicator').textContent = `Step ${tourState.currentStep + 1} of ${tourState.steps.length}`;
   document.getElementById('tourTitle').textContent = step.title;
   document.getElementById('tourDescription').textContent = step.description;
-  
+
   // Position box
   positionTourBox(targetEl, step.placement);
-  
+
   // Prev button disabled on first step
   document.getElementById('btnTourPrev').disabled = tourState.currentStep === 0;
-  
+
   // Next button turns to Finish on last step
-  document.getElementById('btnTourNext').innerHTML = tourState.currentStep === tourState.steps.length - 1 
-    ? 'Finish <i data-lucide="check"></i>' 
+  document.getElementById('btnTourNext').innerHTML = tourState.currentStep === tourState.steps.length - 1
+    ? 'Finish <i data-lucide="check"></i>'
     : 'Next <i data-lucide="chevron-right"></i>';
-    
+
   if (window.lucide) window.lucide.createIcons();
 }
 
 function positionTourBox(targetEl, placement) {
   const box = document.getElementById('tutorialBox');
   if (!box) return;
-  
+
   const targetRect = targetEl.getBoundingClientRect();
   const boxRect = box.getBoundingClientRect();
-  
+
   let top = 0;
   let left = 0;
   const padding = 15;
-  
+
   box.className = 'tutorial-box';
-  
-  switch(placement) {
+
+  switch (placement) {
     case 'bottom':
       top = targetRect.bottom + padding + window.scrollY;
       left = targetRect.left + (targetRect.width / 2) - (boxRect.width / 2) + window.scrollX;
@@ -961,14 +961,14 @@ function positionTourBox(targetEl, placement) {
       box.classList.add('arrow-left');
       break;
   }
-  
+
   // Constrain bounds
   if (left < padding) left = padding;
   if (left + boxRect.width > window.innerWidth - padding) {
     left = window.innerWidth - boxRect.width - padding;
   }
   if (top < padding) top = padding;
-  
+
   box.style.top = `${top}px`;
   box.style.left = `${left}px`;
   box.style.position = 'absolute';
@@ -1036,11 +1036,11 @@ window.dismissWelcomeOverlay = dismissWelcomeOverlay;
 function handleIncomingShortcut() {
   const urlParams = new URLSearchParams(window.location.search);
   const action = urlParams.get('action');
-  
+
   if (action !== 'add-tx') return;
 
-  const desc = urlParams.get('description') || urlParams.get('desc');
-  const amountStr = urlParams.get('amount');
+  const desc = (urlParams.get('description') || urlParams.get('desc') || '').trim();
+  const amountStr = (urlParams.get('amount') || '').trim();
   const type = urlParams.get('type') || 'expense';
   let category = urlParams.get('category');
   const notes = urlParams.get('notes');
@@ -1048,17 +1048,23 @@ function handleIncomingShortcut() {
   const auto = urlParams.get('auto') === 'true';
 
   if (!desc || !amountStr) {
-    showToast('Siri Shortcut Error: Description and Amount are required.');
+    showToast(`Siri Shortcut Error: Description and Amount are required. Received desc="${desc}", amount="${amountStr}"`);
     // Clean up URL parameters to keep screen clean
     window.history.replaceState({}, document.title, window.location.pathname);
     return;
   }
 
   // Clean amountStr of any currency symbols, commas, or spaces (e.g. "Rs. 2,500.00" -> "2500.00")
-  const cleanAmountStr = amountStr.replace(/[^\d.-]/g, '');
+  let cleanAmountStr = amountStr.replace(/^[^0-9.-]+/g, '').replace(/[^\d.-]/g, '');
+  
+  // If we have multiple dots (e.g. ".30.00" from "Rs.30.00") and it starts with a dot, strip the leading dot
+  if (cleanAmountStr.startsWith('.') && (cleanAmountStr.match(/\./g) || []).length > 1) {
+    cleanAmountStr = cleanAmountStr.substring(1);
+  }
+  
   const amount = parseFloat(cleanAmountStr);
   if (isNaN(amount) || amount <= 0) {
-    showToast('Siri Shortcut Error: Invalid Amount.');
+    showToast(`Siri Shortcut Error: Invalid Amount. Received amount="${amountStr}" (Parsed: "${cleanAmountStr}")`);
     window.history.replaceState({}, document.title, window.location.pathname);
     return;
   }
@@ -1071,7 +1077,7 @@ function handleIncomingShortcut() {
   const incomeCategories = ['Salary', 'Freelance', 'Investments', 'Miscellaneous'];
   const expenseCategories = ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Miscellaneous'];
   const validCategories = finalType === 'income' ? incomeCategories : expenseCategories;
-  
+
   // Find case-insensitive match or fallback to Miscellaneous
   let finalCategory = 'Miscellaneous';
   if (category) {
@@ -1102,10 +1108,10 @@ function handleIncomingShortcut() {
     state.transactions.push(transactionData);
     saveToLocalStorage();
     setupMonthSelector();
-    
+
     // Custom Siri Toast with premium animation
-    showSiriSuccessToast(`Added via Siri Shortcut`, `${desc} — ₹${amount.toLocaleString(undefined, {minimumFractionDigits: 2})}`);
-    
+    showSiriSuccessToast(`Added via Siri Shortcut`, `${desc} — ₹${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`);
+
     // Clean up URL query parameters to avoid duplicate submission on refresh
     window.history.replaceState({}, document.title, window.location.pathname);
   } else {
@@ -1113,7 +1119,7 @@ function handleIncomingShortcut() {
     document.getElementById('txDescription').value = desc.trim();
     document.getElementById('txAmount').value = amount;
     document.getElementById('txType').value = finalType;
-    
+
     // Trigger category dropdown refresh based on type
     handleFormTypeChange();
     document.getElementById('txCategory').value = finalCategory;
@@ -1154,7 +1160,7 @@ function showSiriSuccessToast(title, message) {
       <div class="siri-toast-message">${message}</div>
     </div>
   `;
-  
+
   container.appendChild(toast);
   if (window.lucide) window.lucide.createIcons();
 
@@ -1186,7 +1192,7 @@ function setupSiriUrlBuilder() {
   const handleSiriTypeChange = () => {
     const type = siriType.value;
     siriCategory.innerHTML = '';
-    const options = type === 'income' 
+    const options = type === 'income'
       ? ['Salary', 'Freelance', 'Investments', 'Miscellaneous']
       : ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Miscellaneous'];
 
@@ -1206,7 +1212,7 @@ function setupSiriUrlBuilder() {
     const type = siriType.value;
     const cat = siriCategory.value;
     const auto = siriAuto.checked;
-    
+
     const url = `${base}?action=add-tx&amount=${amount}&desc=${desc}&category=${cat}&type=${type}&auto=${auto}`;
     siriGeneratedUrl.value = url;
   };
