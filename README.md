@@ -1,7 +1,7 @@
 # 📊 SmartSpense - Smart Expenses Tracker
 
 SmartSpense is a smart, high-fidelity **Expense Tracker Single Page Application (SPA)** designed with a gorgeous, glassmorphic Material 3 Expressive UI. Built using modern Vanilla JavaScript, HTML5, and CSS3, it offers local state persistence, interactive analytics, budget checks, and data portability. I built this project as an initial step for managing my personal expenses, and have now updated it to support Siri Shortcuts to help me automatically update expenses to this app after I perform a UPI transaction.
-
+Link to the app: https://ultraereon.github.io/smartspense/
 ---
 
 ## ✨ Key Features
