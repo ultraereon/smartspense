@@ -1032,6 +1032,27 @@ window.loadDemoData = loadDemoData;
 window.startTourFromOverlay = startTourFromOverlay;
 window.dismissWelcomeOverlay = dismissWelcomeOverlay;
 
+// Auto-categorize expenses based on description keywords
+function autoCategorizeExpense(desc) {
+  if (!desc) return 'Miscellaneous';
+  const lowercaseDesc = desc.toLowerCase();
+  
+  const rules = [
+    { category: 'Food', keywords: ['swiggy', 'zomato', 'restaurant', 'cafe', 'hotel', 'food', 'eat', 'bakery', 'kitchen', 'diner', 'starbucks', 'mcdonalds', 'kfc', 'burger', 'pizza', 'tea', 'coffee', 'canteen', 'grocer', 'supermarket', 'mart', 'dining'] },
+    { category: 'Transport', keywords: ['uber', 'ola', 'auto', 'metro', 'irctc', 'cab', 'petrol', 'fuel', 'shell', 'hpcl', 'iocl', 'bpcl', 'cng', 'toll', 'railway', 'transport', 'train', 'flight', 'airline', 'bus', 'parking'] },
+    { category: 'Utilities', keywords: ['electricity', 'power', 'wifi', 'bescom', 'water', 'recharge', 'bill', 'telecom', 'jio', 'airtel', 'vi ', 'broadband', 'act ', 'gas', 'dth', 'insurance', 'rent'] },
+    { category: 'Entertainment', keywords: ['netflix', 'spotify', 'movie', 'pvr', 'booking', 'game', 'play', 'steam', 'theatre', 'show', 'concert', 'club', 'pub', 'bar ', 'subscrip'] }
+  ];
+
+  for (const rule of rules) {
+    if (rule.keywords.some(keyword => lowercaseDesc.includes(keyword))) {
+      return rule.category;
+    }
+  }
+  
+  return 'Miscellaneous';
+}
+
 // --- Siri Shortcuts Integration ---
 function handleIncomingShortcut() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -1077,12 +1098,20 @@ function handleIncomingShortcut() {
   const expenseCategories = ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Miscellaneous'];
   const validCategories = finalType === 'income' ? incomeCategories : expenseCategories;
 
-  // Find case-insensitive match or fallback to Miscellaneous
-  let finalCategory = 'Miscellaneous';
+  // Find case-insensitive match or fallback to auto-categorization
+  let finalCategory = '';
   if (category) {
     const matched = validCategories.find(c => c.toLowerCase() === category.toLowerCase());
     if (matched) {
       finalCategory = matched;
+    }
+  }
+
+  if (!finalCategory) {
+    if (finalType === 'expense') {
+      finalCategory = autoCategorizeExpense(desc);
+    } else {
+      finalCategory = 'Miscellaneous';
     }
   }
 
