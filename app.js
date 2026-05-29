@@ -1055,10 +1055,10 @@ function autoCategorizeTransaction(desc, type) {
   } else {
     const expenseRules = [
       { category: 'Food', keywords: ['swiggy', 'zomato', 'restaurant', 'cafe', 'hotel', 'food', 'eat', 'bakery', 'kitchen', 'diner', 'starbucks', 'mcdonalds', 'kfc', 'burger', 'pizza', 'tea', 'coffee', 'canteen', 'grocer', 'supermarket', 'mart', 'dining'] },
-      { category: 'Transport', keywords: ['uber', 'ola', 'auto', 'metro', 'irctc', 'cab', 'petrol', 'fuel', 'shell', 'hpcl', 'iocl', 'bpcl', 'cng', 'toll', 'railway', 'transport', 'train', 'flight', 'airline', 'bus', 'parking', 'ksrtc', 'kerala state ro'] },
+      { category: 'Transport', keywords: ['uber', 'ola', 'auto', 'metro', 'kmrl', 'chalokeralasrtcdqr01', 'chalo', 'irctc', 'cab', 'petrol', 'pump', 'fuel', 'shell', 'hpcl', 'iocl', 'bpcl', 'cng', 'toll', 'railway', 'transport', 'train', 'flight', 'airline', 'bus', 'parking', 'ksrtc', 'kerala state ro'] },
       { category: 'Utilities', keywords: ['electricity', 'kseb', 'kfon', 'keralavision', 'kwa', 'power', 'wifi', 'bescom', 'water', 'recharge', 'bill', 'telecom', 'jio', 'airtel', 'vi ', 'broadband', 'act ', 'gas', 'dth', 'insurance', 'rent'] },
       { category: 'Entertainment', keywords: ['netflix', 'apple', 'spotify', 'movie', 'pvr', 'booking', 'game', 'play', 'steam', 'theatre', 'show', 'concert', 'club', 'pub', 'bar ', 'subscrip'] },
-      { category: 'Shopping', keywords: ['amazon', 'flipkart', 'myntra', 'ajio', 'cloth', 'shop', 'mall', 'store', 'purchase', 'apparel', 'shoes', 'amazon.in'] }
+      { category: 'Shopping', keywords: ['amazon', 'lulu', 'nesto', 'kunnil', 'hyper', 'hypermarket', 'mart', 'market', 'vegetables', 'fruits', 'vyapar', 'flipkart', 'myntra', 'ajio', 'cloth', 'shop', 'mall', 'store', 'purchase', 'apparel', 'shoes', 'amazon.in'] }
     ];
 
     for (const rule of expenseRules) {
@@ -1074,7 +1074,7 @@ function autoCategorizeTransaction(desc, type) {
 function getBrandMetadata(desc) {
   if (!desc) return null;
   const lowercase = desc.toLowerCase();
-  
+
   if (lowercase.includes('netflix')) return { logo: '🍿', cleanName: 'Netflix', color: '#E50914' };
   if (lowercase.includes('kfc')) return { logo: '🍗', cleanName: 'KFC', color: '#E4002B' };
   if (lowercase.includes('kseb')) return { logo: '⚡', cleanName: 'KSEB', color: '#FFD700' };
@@ -1086,7 +1086,7 @@ function getBrandMetadata(desc) {
   if (lowercase.includes('zomato')) return { logo: '🍅', cleanName: 'Zomato', color: '#CB202D' };
   if (lowercase.includes('ksrtc')) return { logo: '🚌', cleanName: 'KSRTC', color: '#D32F2F' };
   if (lowercase.includes('kerala state ro')) return { logo: '🚌', cleanName: 'KSRTC', color: '#D32F2F' };
-  
+
   return null;
 }
 
@@ -1156,7 +1156,7 @@ function handleIncomingShortcut() {
       finalCategory = autoCat;
     }
   }
-  
+
   if (!finalCategory) {
     finalCategory = 'Miscellaneous';
   }
