@@ -327,6 +327,113 @@
           </div>
         </div>
 
+        <!-- Siri Shortcuts Integration -->
+        <div class="glass-card siri-shortcuts-card">
+          <div class="siri-card-header" style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+            <div class="siri-orb-container" style="position: relative; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: radial-gradient(circle, #5b9dff 10%, #7623ff 50%, #f603c4 100%); box-shadow: 0 0 15px rgba(118, 35, 255, 0.4); display: flex; align-items: center; justify-content: center;">
+              <div class="siri-orb" style="position: absolute; width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%); mix-blend-mode: overlay; animation: siriPulse 4s ease-in-out infinite;"></div>
+              <i data-lucide="mic" style="color: #fff; width: 18px; height: 18px; z-index: 2;"></i>
+            </div>
+            <div>
+              <h2 style="font-size: 1.25rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">Siri Shortcuts</h2>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.2;">Automate expense logging directly from iOS & macOS</p>
+            </div>
+          </div>
+
+          <!-- Dynamic URL Builder -->
+          <div class="siri-section-title" style="font-size: 0.75rem; font-weight: 700; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; border-bottom: 1px solid var(--outline-variant); padding-bottom: 6px;">
+            Siri Input URL Generator
+          </div>
+          
+          <div class="siri-builder-form">
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="siriDesc">Description</label>
+              <input type="text" id="siriDesc" value="Coffee" placeholder="e.g. Starbucks Coffee">
+            </div>
+
+            <div class="form-row" style="margin-bottom: 12px;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="siriAmount">Amount (₹)</label>
+                <input type="number" id="siriAmount" value="150" min="0.01" step="0.01">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="siriType">Type</label>
+                <select id="siriType">
+                  <option value="expense">Expense</option>
+                  <option value="income">Income</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row" style="margin-bottom: 16px;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="siriCategory">Category</label>
+                <select id="siriCategory">
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
+                <label for="siriAuto" style="margin-bottom: 8px;">Auto-Save</label>
+                <label class="switch-container" style="position: relative; display: inline-block; width: 48px; height: 26px;">
+                  <input type="checkbox" id="siriAuto" checked style="opacity: 0; width: 0; height: 0; position: absolute;">
+                  <span class="switch-slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--outline); transition: .3s; border-radius: 34px;"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="siriGeneratedUrl">Shortcut Integration URL</label>
+              <div class="copy-url-wrapper">
+                <textarea id="siriGeneratedUrl" readonly rows="2" style="font-family: monospace; font-size: 0.72rem; padding: 10px; resize: none; background: rgba(0,0,0,0.15); border-color: var(--outline-variant); border-radius: var(--shape-small); line-height: 1.4; color: var(--text-secondary); width: 100%; box-sizing: border-box; overflow-y: hidden;"></textarea>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button id="btnCopySiriUrl" class="btn-primary" style="flex-grow: 1; padding: 10px 14px; font-size: 0.82rem; height: 40px;">
+                <i data-lucide="copy"></i> Copy Link
+              </button>
+              <button id="btnTestSiriUrl" class="btn-secondary" style="flex-grow: 1; padding: 10px 14px; font-size: 0.82rem; height: 40px;" title="Test in this browser window">
+                <i data-lucide="play-circle"></i> Test Link
+              </button>
+            </div>
+          </div>
+
+          <!-- Collapsible Setup Guide -->
+          <button id="siriGuideToggle" class="btn-secondary" style="width: 100%; margin-top: 16px; padding: 8px 12px; font-size: 0.82rem; display: flex; justify-content: space-between; align-items: center; border-color: var(--outline-variant); background: rgba(255, 255, 255, 0.02); height: 38px;">
+            <span style="display: flex; align-items: center; gap: 6px;"><i data-lucide="help-circle" style="width: 16px; height: 16px;"></i> iOS Setup Tutorial</span>
+            <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
+          </button>
+          
+          <div id="siriGuideSection" class="siri-guide-content hidden" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--outline-variant);">
+            <ol class="siri-steps" style="list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 10px;">
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">1</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Open the <strong>Shortcuts</strong> app on iOS/macOS and create a new shortcut.</div>
+              </li>
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">2</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add <strong>Ask for Input</strong> (Number) for the Amount.</div>
+              </li>
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">3</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add <strong>Ask for Input</strong> (Text) for the Description.</div>
+              </li>
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">4</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add <strong>List</strong> / <strong>Menu</strong> for Categories if desired.</div>
+              </li>
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">5</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add a <strong>URL</strong> action, paste the generated URL, replacing fixed parameters with variables from steps 2-4.</div>
+              </li>
+              <li style="display: flex; gap: 10px; align-items: flex-start;">
+                <div class="step-num" style="display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background-color: var(--primary); color: var(--on-primary); font-size: 0.75rem; font-weight: 700; border-radius: 50%; margin-top: 2px;">6</div>
+                <div class="step-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Add <strong>Open URL</strong> (opens Safari/app) to add the transaction instantly! Add to home screen for 1-tap logging.</div>
+              </li>
+            </ol>
+          </div>
+        </div>
+
         <!-- Backup, Restore, factory reset -->
         <div class="glass-card settings-section">
           <h2><i data-lucide="database" style="color: var(--text-secondary)"></i> Data Administration</h2>

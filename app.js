@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupMonthSelector();
   setupEventListeners();
   clearTransactionForm();
+  handleIncomingShortcut();
+  setupSiriUrlBuilder();
   render();
 });
 
@@ -1029,3 +1031,236 @@ window.prevTourStep = prevTourStep;
 window.loadDemoData = loadDemoData;
 window.startTourFromOverlay = startTourFromOverlay;
 window.dismissWelcomeOverlay = dismissWelcomeOverlay;
+
+// --- Siri Shortcuts Integration ---
+function handleIncomingShortcut() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const action = urlParams.get('action');
+  
+  if (action !== 'add-tx') return;
+
+  const desc = urlParams.get('description') || urlParams.get('desc');
+  const amountStr = urlParams.get('amount');
+  const type = urlParams.get('type') || 'expense';
+  let category = urlParams.get('category');
+  const notes = urlParams.get('notes');
+  const dateStr = urlParams.get('date');
+  const auto = urlParams.get('auto') === 'true';
+
+  if (!desc || !amountStr) {
+    showToast('Siri Shortcut Error: Description and Amount are required.');
+    // Clean up URL parameters to keep screen clean
+    window.history.replaceState({}, document.title, window.location.pathname);
+    return;
+  }
+
+  const amount = parseFloat(amountStr);
+  if (isNaN(amount) || amount <= 0) {
+    showToast('Siri Shortcut Error: Invalid Amount.');
+    window.history.replaceState({}, document.title, window.location.pathname);
+    return;
+  }
+
+  // Validate type
+  const validTypes = ['income', 'expense'];
+  const finalType = validTypes.includes(type.toLowerCase()) ? type.toLowerCase() : 'expense';
+
+  // Validate and map category
+  const incomeCategories = ['Salary', 'Freelance', 'Investments', 'Miscellaneous'];
+  const expenseCategories = ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Miscellaneous'];
+  const validCategories = finalType === 'income' ? incomeCategories : expenseCategories;
+  
+  // Find case-insensitive match or fallback to Miscellaneous
+  let finalCategory = 'Miscellaneous';
+  if (category) {
+    const matched = validCategories.find(c => c.toLowerCase() === category.toLowerCase());
+    if (matched) {
+      finalCategory = matched;
+    }
+  }
+
+  // Date validation
+  let finalDate = dateStr;
+  if (!finalDate || isNaN(Date.parse(finalDate))) {
+    finalDate = new Date().toISOString().split('T')[0]; // Default to today's date YYYY-MM-DD
+  }
+
+  if (auto) {
+    // Add transaction automatically
+    const transactionData = {
+      id: 'tx-' + Date.now(),
+      description: desc.trim(),
+      amount: amount,
+      type: finalType,
+      category: finalCategory,
+      date: finalDate,
+      notes: notes ? notes.trim() : null
+    };
+
+    state.transactions.push(transactionData);
+    saveToLocalStorage();
+    setupMonthSelector();
+    
+    // Custom Siri Toast with premium animation
+    showSiriSuccessToast(`Added via Siri Shortcut`, `${desc} — ₹${amount.toLocaleString(undefined, {minimumFractionDigits: 2})}`);
+    
+    // Clean up URL query parameters to avoid duplicate submission on refresh
+    window.history.replaceState({}, document.title, window.location.pathname);
+  } else {
+    // Pre-fill the form for user review
+    document.getElementById('txDescription').value = desc.trim();
+    document.getElementById('txAmount').value = amount;
+    document.getElementById('txType').value = finalType;
+    
+    // Trigger category dropdown refresh based on type
+    handleFormTypeChange();
+    document.getElementById('txCategory').value = finalCategory;
+    document.getElementById('txDate').value = finalDate;
+    if (notes) {
+      document.getElementById('txNotes').value = notes.trim();
+    }
+
+    // Scroll form into view
+    const formSec = document.getElementById('transactionFormSection');
+    if (formSec) {
+      setTimeout(() => {
+        formSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 500);
+    }
+
+    // Custom Siri Toast explaining action
+    showSiriSuccessToast(`Pre-filled via Siri Shortcut`, `Review details and click Add Transaction to save.`);
+
+    // Clean up URL query parameters
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+}
+
+function showSiriSuccessToast(title, message) {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'toast siri-shortcut-toast';
+  toast.innerHTML = `
+    <div class="siri-pulse-container">
+      <div class="siri-pulse"></div>
+      <i data-lucide="zap" class="siri-toast-icon"></i>
+    </div>
+    <div class="siri-toast-content">
+      <div class="siri-toast-title">${title}</div>
+      <div class="siri-toast-message">${message}</div>
+    </div>
+  `;
+  
+  container.appendChild(toast);
+  if (window.lucide) window.lucide.createIcons();
+
+  // Trigger animations
+  setTimeout(() => toast.classList.add('visible'), 10);
+
+  // Remove toast
+  setTimeout(() => {
+    toast.classList.remove('visible');
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
+}
+
+function setupSiriUrlBuilder() {
+  const siriDesc = document.getElementById('siriDesc');
+  const siriAmount = document.getElementById('siriAmount');
+  const siriType = document.getElementById('siriType');
+  const siriCategory = document.getElementById('siriCategory');
+  const siriAuto = document.getElementById('siriAuto');
+  const siriGeneratedUrl = document.getElementById('siriGeneratedUrl');
+  const btnCopySiriUrl = document.getElementById('btnCopySiriUrl');
+  const btnTestSiriUrl = document.getElementById('btnTestSiriUrl');
+  const siriGuideToggle = document.getElementById('siriGuideToggle');
+  const siriGuideSection = document.getElementById('siriGuideSection');
+
+  if (!siriDesc || !siriAmount || !siriType || !siriCategory || !siriAuto || !siriGeneratedUrl) return;
+
+  // Handle Siri Type change (dynamically load categories)
+  const handleSiriTypeChange = () => {
+    const type = siriType.value;
+    siriCategory.innerHTML = '';
+    const options = type === 'income' 
+      ? ['Salary', 'Freelance', 'Investments', 'Miscellaneous']
+      : ['Food', 'Utilities', 'Entertainment', 'Housing', 'Transport', 'Miscellaneous'];
+
+    options.forEach(opt => {
+      const el = document.createElement('option');
+      el.value = opt;
+      el.textContent = opt;
+      siriCategory.appendChild(el);
+    });
+    updateSiriUrl();
+  };
+
+  const updateSiriUrl = () => {
+    const base = window.location.origin + window.location.pathname;
+    const desc = encodeURIComponent(siriDesc.value.trim() || 'Coffee');
+    const amount = parseFloat(siriAmount.value) || 150;
+    const type = siriType.value;
+    const cat = siriCategory.value;
+    const auto = siriAuto.checked;
+    
+    const url = `${base}?action=add-tx&amount=${amount}&desc=${desc}&category=${cat}&type=${type}&auto=${auto}`;
+    siriGeneratedUrl.value = url;
+  };
+
+  // Event Listeners for builder changes
+  siriType.addEventListener('change', handleSiriTypeChange);
+  siriDesc.addEventListener('input', updateSiriUrl);
+  siriAmount.addEventListener('input', updateSiriUrl);
+  siriCategory.addEventListener('change', updateSiriUrl);
+  siriAuto.addEventListener('change', updateSiriUrl);
+
+  // Initialize category options and url
+  handleSiriTypeChange();
+
+  // Copy button
+  if (btnCopySiriUrl) {
+    btnCopySiriUrl.addEventListener('click', () => {
+      siriGeneratedUrl.select();
+      siriGeneratedUrl.setSelectionRange(0, 99999); // For mobile devices
+      navigator.clipboard.writeText(siriGeneratedUrl.value)
+        .then(() => {
+          const originalHTML = btnCopySiriUrl.innerHTML;
+          btnCopySiriUrl.innerHTML = '<i data-lucide="check"></i> Copied!';
+          btnCopySiriUrl.classList.add('copied');
+          if (window.lucide) window.lucide.createIcons();
+          setTimeout(() => {
+            btnCopySiriUrl.innerHTML = originalHTML;
+            btnCopySiriUrl.classList.remove('copied');
+            if (window.lucide) window.lucide.createIcons();
+          }, 2000);
+        })
+        .catch(err => {
+          console.error('Failed to copy text: ', err);
+          showToast('Could not copy automatically. Please copy manually.');
+        });
+    });
+  }
+
+  // Test button
+  if (btnTestSiriUrl) {
+    btnTestSiriUrl.addEventListener('click', () => {
+      // Run it in the current window to demonstrate the action!
+      window.location.href = siriGeneratedUrl.value;
+    });
+  }
+
+  // Guide Toggle Drawer
+  if (siriGuideToggle && siriGuideSection) {
+    siriGuideToggle.addEventListener('click', () => {
+      siriGuideSection.classList.toggle('hidden');
+      const icon = siriGuideToggle.querySelector('i');
+      if (icon) {
+        const isHidden = siriGuideSection.classList.contains('hidden');
+        icon.setAttribute('data-lucide', isHidden ? 'chevron-down' : 'chevron-up');
+        if (window.lucide) window.lucide.createIcons();
+      }
+    });
+  }
+}
