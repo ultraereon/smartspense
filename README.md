@@ -91,14 +91,6 @@ SmartSpense is pure front-end client code and requires **no compilation, bundler
    ```
    Then open **[http://localhost:8000](http://localhost:8000)** in your browser.
 
-### Deploying Your Own Instance
-To host your own copy on GitHub Pages:
-1. Go to your repository on GitHub.
-2. Click **Settings** -> **Pages** (under the "Code and automation" section).
-3. Under **Build and deployment**, set **Source** to `Deploy from a branch`.
-4. Choose the `main` branch and `/ (root)` folder, then click **Save**.
-5. Your live link will be generated in 1–2 minutes!
-
 ---
 
 ## ⚙️ Architecture & Implementation Notes
